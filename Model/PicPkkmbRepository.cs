@@ -144,12 +144,11 @@ namespace PKKMB_API.Model
 			{
 				string hashedPassword = BCrypt.Net.BCrypt.HashPassword(pic.pic_password, 12);
 
-				string query = "INSERT INTO pkm_mspicpkkmb (pic_nokaryawan, pic_nama, pic_password, pic_status) VALUES (@p1, @p2, @p3, @p4)";
-				SqlCommand command = new SqlCommand(query, _connection);
-				command.Parameters.AddWithValue("@p1", pic.pic_nokaryawan);
-				command.Parameters.AddWithValue("@p2", pic.pic_nama);
-				command.Parameters.AddWithValue("@p3", hashedPassword);
-				command.Parameters.AddWithValue("@p4", "Aktif");
+				SqlCommand command = new SqlCommand("sp_TambahPicPkkmb", _connection);
+				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@pic_nama", pic.pic_nama);
+				command.Parameters.AddWithValue("@pic_password", hashedPassword);
+				command.Parameters.AddWithValue("@pic_status", "Aktif");
 				_connection.Open();
 				command.ExecuteNonQuery();
 				_connection.Close();

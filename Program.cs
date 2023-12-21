@@ -24,17 +24,19 @@ builder.Services.AddSwaggerGen(/*options =>
 
 	options.OperationFilter<SecurityRequirementsOperationFilter>();
 }*/);
+
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("AllowAnyOrigin", builder =>
 	{
-		builder
-		.AllowAnyOrigin()
-		.AllowAnyHeader()
-		.AllowAnyMethod();
+		builder.WithOrigins("https://localhost:7240")
+			   .AllowAnyHeader()
+			   .AllowAnyMethod()
+			   .AllowCredentials(); // Allow credentials (cookies)
 	});
 });
-builder.Services.AddAuthentication().AddJwtBearer(options =>
+
+/*builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
 	options.TokenValidationParameters = new TokenValidationParameters
 	{
@@ -44,7 +46,17 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
 		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
 				builder.Configuration.GetSection("AppSettings:Token").Value!))
 	};
-});
+});*/
+
+builder.Services.AddAuthentication("Bearer")
+	.AddJwtBearer("Bearer", options =>
+	{
+		options.Authority = "http://localhost:7240";
+		options.RequireHttpsMetadata = false;
+		options.Audience = "api";
+	});
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<LoginRepository>();
 
@@ -61,6 +73,7 @@ app.UseCors("AllowAnyOrigin");
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

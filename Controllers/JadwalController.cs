@@ -3,69 +3,69 @@ using PKKMB_API.Model;
 
 namespace PKKMB_API.Controllers
 {
-    public class JadwalController : Controller
-    {
-        private readonly JadwalRepository jadwalRepository;
-        ResponseModel response = new ResponseModel();
+	public class JadwalController : Controller
+	{
+		private readonly JadwalRepository jadwalRepository;
+		ResponseModel response = new ResponseModel();
 
-        public JadwalController(IConfiguration configuration)
-        {
-            jadwalRepository = new JadwalRepository(configuration);
-        }
+		public JadwalController(IConfiguration configuration)
+		{
+			jadwalRepository = new JadwalRepository(configuration);
+		}
 
-        [HttpGet("/GetAllJadwal", Name = "GetAllJadwal")]
-        public IActionResult GetAllJadwal()
-        {
-            try
-            {
-                response.status = 200;
-                response.messages = "Success";
-                response.data = jadwalRepository.getAllData();
-            }
-            catch (Exception ex)
-            {
-                response.status = 500;
-                response.messages = "Failed";
-            }
-            return Ok(response);
-        }
+		[HttpGet("/GetAllJadwal", Name = "GetAllJadwal")]
+		public IActionResult GetAllJadwal()
+		{
+			try
+			{
+				response.status = 200;
+				response.messages = "Success";
+				response.data = jadwalRepository.getAllData();
+			}
+			catch (Exception ex)
+			{
+				response.status = 500;
+				response.messages = "Failed";
+			}
+			return Ok(response);
+		}
 
-        [HttpGet("/GetJadwal", Name = "GetJadwal")]
-        public IActionResult GetJadwal(string jdl_idjadwal)
-        {
-            try
-            {
-                response.status = 200;
-                response.messages = "Success";
-                response.data = jadwalRepository.getData(jdl_idjadwal);
-            }
-            catch (Exception ex)
-            {
-                response.status = 500;
-                response.messages = "Failed, " + ex;
-            }
-            return Ok(response);
-        }
+		[HttpGet("/GetJadwal", Name = "GetJadwal")]
+		public IActionResult GetJadwal(string jdl_idjadwal)
+		{
+			try
+			{
+				response.status = 200;
+				response.messages = "Success";
+				response.data = jadwalRepository.getData(jdl_idjadwal);
+			}
+			catch (Exception ex)
+			{
+				response.status = 500;
+				response.messages = "Failed, " + ex;
+			}
+			return Ok(response);
+		}
 
-        [HttpPost("/InsertJadwal", Name = "InsertJadwal")]
-        public IActionResult InsertJadwal([FromBody] JadwalModel jadwalModel)
-        {
+		[HttpPost("/InsertJadwal", Name = "InsertJadwal")]
+		public IActionResult InsertJadwal([FromBody] JadwalModel jadwalModel)
+		{
 
-            try
-            {
-                var result = jadwalRepository.insertJadwal(jadwalModel);
-                response.status = 200;
-                response.messages = "Success";
-                response.data = result;
-            }
-            catch (Exception ex)
-            {
-                response.status = 500;
-                response.messages = "Failed, " + ex;
+			try
+			{
+				var result = jadwalRepository.insertJadwal(jadwalModel);
+				response.status = 200;
+				response.messages = "Success";
+				response.data = result;
+			}
+			catch (Exception ex)
+			{
+				response.status = 500;
+				response.messages = "Failed, " + ex;
 
-            }
-            return Ok(response);
-        }
+			}
+			return Ok(response);
+		}
 
 		[HttpPut("/UbahJadwal", Name = "UbahJadwal")]
 		public IActionResult UpdateJadwal([FromBody] JadwalModel jadwalModel)
@@ -94,11 +94,6 @@ namespace PKKMB_API.Controllers
 			}
 
 			return Ok(response);
-		}
-
-		public IActionResult Index()
-		{
-			return View();
 		}
 	}
 }

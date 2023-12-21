@@ -199,7 +199,7 @@ namespace PKKMB_API.Model
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
 				Subject = new ClaimsIdentity(GetUserClaims(user)),
-				Expires = DateTime.UtcNow.AddMinutes(2), // Set the expiration time as needed
+				Expires = DateTime.UtcNow.AddMinutes(10), // Set the expiration time as needed
 				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
 			};
 
@@ -246,6 +246,36 @@ namespace PKKMB_API.Model
 			}
 
 			return Array.Empty<Claim>();
+		}
+
+		public bool ValidateJwtToken(string jwtToken)
+		{
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var key = Encoding.UTF8.GetBytes(_configuration.GetSection("JWT:SecretKey").Value);
+
+			var validationParameters = new TokenValidationParameters
+			{
+				ValidateIssuerSigningKey = true,
+				IssuerSigningKey = new SymmetricSecurityKey(key),
+				ValidateIssuer = false, // Set to true if you want to validate the issuer
+				ValidateAudience = false, // Set to true if you want to validate the audience
+				ValidateLifetime = true, // Set to true if you want to validate the expiration time
+				ClockSkew = TimeSpan.Zero // Set the clock skew to zero to account for time differences
+			};
+
+			SecurityToken validatedToken;
+			try
+			{
+				ClaimsPrincipal principal = tokenHandler.ValidateToken(jwtToken, validationParameters, out validatedToken);
+				// You can access the claims from the principal variable if needed
+				// e.g., var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+				return true; // Token is valid
+			}
+			catch (Exception ex)
+			{
+				// Token validation failed
+				return false;
+			}
 		}
 	}
 }

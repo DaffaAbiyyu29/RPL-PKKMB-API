@@ -48,6 +48,7 @@ namespace PKKMB_API.Model
 						mhs_kategori = reader["mhs_kategori"].ToString(),
 						mhs_idkelompok = reader["mhs_idkelompok"].ToString(),
 						mhs_status = reader["mhs_status"].ToString(),
+						mhs_statuskelulusan = reader["mhs_statuskelulusan"].ToString(),
 					};
 					mhsList.Add(mhsBaru);
 				}
@@ -87,7 +88,8 @@ namespace PKKMB_API.Model
 						mhs_password = reader["mhs_password"].ToString(),
 						mhs_kategori = reader["mhs_kategori"].ToString(),
 						mhs_idkelompok = reader["mhs_idkelompok"].ToString(),
-						mhs_status = reader["mhs_status"].ToString()
+						mhs_status = reader["mhs_status"].ToString(),
+						mhs_statuskelulusan = reader["mhs_statuskelulusan"].ToString()
 					};
 
 					reader.Close();

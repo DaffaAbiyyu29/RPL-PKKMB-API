@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PKKMB_API.Model;
 
@@ -41,7 +42,7 @@ namespace PKKMB_API.Controllers
 						var token = _loginRepo.GenerateJwtToken(mhsBaru);
 
 						// Set JWT token in cookies
-						Response.Cookies.Append("JWTToken", token, new CookieOptions
+						Response.Cookies.Append("token", token, new CookieOptions
 						{
 							HttpOnly = true,
 							Secure = true,  // Set to true in a production environment (requires HTTPS)
@@ -73,7 +74,7 @@ namespace PKKMB_API.Controllers
 						var token = _loginRepo.GenerateJwtToken(ksk);
 
 						// Set JWT token in cookies
-						Response.Cookies.Append("JWTToken", token, new CookieOptions
+						Response.Cookies.Append("token", token, new CookieOptions
 						{
 							HttpOnly = true,
 							Secure = true,  // Set to true in a production environment (requires HTTPS)
@@ -105,7 +106,7 @@ namespace PKKMB_API.Controllers
 						var token = _loginRepo.GenerateJwtToken(pic);
 
 						// Set JWT token in cookies
-						Response.Cookies.Append("JWTToken", token, new CookieOptions
+						Response.Cookies.Append("token", token, new CookieOptions
 						{
 							HttpOnly = true,
 							Secure = true,  // Set to true in a production environment (requires HTTPS)
@@ -139,6 +140,26 @@ namespace PKKMB_API.Controllers
 			{
 				// General error
 				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Login = " + ex.Message, Data = new Object() });
+			}
+		}
+
+		[HttpPost("/ValidateToken", Name = "ValidateToken")]
+		public IActionResult ValidateToken([FromHeader] string token)
+		{
+			if (token == null)
+			{
+				return BadRequest(new { Status = 401, Message = "Token is missing or empty." });
+			}
+
+			bool isValid = _loginRepo.ValidateJwtToken(token);
+
+			if (isValid)
+			{
+				return Ok(new { Status = 200, Message = "Authorized." });
+			}
+			else
+			{
+				return Unauthorized(new { Status = 401, Message = "Unauthorized." });
 			}
 		}
 	}
