@@ -33,9 +33,10 @@ namespace PKKMB_API.Model
 						nls_nopendaftaran = reader["nls_nopendaftaran"].ToString(),
 						nls_nim = reader["nls_nim"].ToString(),
 						nls_sikap = reader["nls_sikap"].ToString(),
+						nls_tanggal = DateTime.Parse(reader["nls_tanggal"].ToString()),
 						nls_jamplus = Convert.ToInt32(reader["nls_jamplus"].ToString()),
 						nls_jamminus = Convert.ToInt32(reader["nls_jamminus"].ToString()),
-						nls_tanggal = DateTime.Parse(reader["nls_tanggal"].ToString()),
+						nls_deskripsi = reader["nls_deskripsi"].ToString(),
 						nls_status = reader["nls_status"].ToString(),
 					};
 					nilaisikapList.Add(nilaiSikap);
@@ -68,6 +69,7 @@ namespace PKKMB_API.Model
 				nilaiSikapModel.nls_jamplus = Convert.ToInt32(reader["nls_jamplus"].ToString());
 				nilaiSikapModel.nls_jamminus = Convert.ToInt32(reader["nls_jamminus"].ToString());
 				nilaiSikapModel.nls_tanggal = DateTime.Parse(reader["nls_tanggal"].ToString());
+				nilaiSikapModel.nls_deskripsi = reader["nls_deskripsi"].ToString();
 				nilaiSikapModel.nls_status = reader["nls_status"].ToString();
 				reader.Close();
 				_connection.Close();
@@ -93,6 +95,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_nls_tanggal", nilaiSikapModel.nls_tanggal);
 				command.Parameters.AddWithValue("@p_nls_jamplus", nilaiSikapModel.nls_jamplus);
 				command.Parameters.AddWithValue("@p_nls_jamminus", nilaiSikapModel.nls_jamminus);
+				command.Parameters.AddWithValue("@p_nls_deskripsi", nilaiSikapModel.nls_deskripsi);
 				command.Parameters.AddWithValue("@p_nls_status", nilaiSikapModel.nls_status);
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -122,7 +125,8 @@ namespace PKKMB_API.Model
 							"nls_jamplus = @p5, " +
 							"nls_jamminus = @p6, " +
 							"nls_tanggal = @p7, " +
-							"nls_status = @p8 " +
+							"nls_deskripsi = @p8 " +
+							"nls_status = @p9 " +
 							"WHERE nls_idnilaisikap = @p1";
 				using SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p1", nilaiSikapModel.nls_idnilaisikap);
@@ -132,7 +136,8 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p5", nilaiSikapModel.nls_jamplus);
 				command.Parameters.AddWithValue("@p6", nilaiSikapModel.nls_jamminus);
 				command.Parameters.AddWithValue("@p7", nilaiSikapModel.nls_tanggal);
-				command.Parameters.AddWithValue("@p8", nilaiSikapModel.nls_status);
+				command.Parameters.AddWithValue("@p8", nilaiSikapModel.nls_deskripsi);
+				command.Parameters.AddWithValue("@p9", nilaiSikapModel.nls_status);
 				_connection.Open();
 				command.ExecuteNonQuery();
 				_connection.Close();

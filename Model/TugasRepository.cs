@@ -4,6 +4,9 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using PKKMB_API.Model;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+
 
 namespace PKKMB_API.Repository
 {
@@ -38,6 +41,7 @@ namespace PKKMB_API.Repository
 						tgs_tglpemberiantugas = DateTime.Parse(reader["tgs_tglpemberiantugas"].ToString()),
 						tgs_filetugas = reader["tgs_filetugas"].ToString(),
 						tgs_deadline = DateTime.Parse(reader["tgs_deadline"].ToString()),
+						tgs_deskripsi = reader["tgs_deskripsi"].ToString(),
 						tgs_status = reader["tgs_status"].ToString(),
 					};
 					tugasList.Add(tugas);
@@ -50,6 +54,60 @@ namespace PKKMB_API.Repository
 			{
 				Console.WriteLine(ex.Message);
 				return null;
+			}
+		}
+
+		public string NextId()
+		{
+			try
+			{
+				string query = "SELECT dbo.GenerateTgsIdTugas() AS ID";
+				SqlCommand command = new SqlCommand(query, _connection);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+				string nextId = null;
+
+				if (reader.Read())
+				{
+					nextId = reader["ID"].ToString();
+				}
+
+				reader.Close();
+				_connection.Close();
+				return nextId;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return null; // atau throw exception sesuai kebutuhan
+			}
+		}
+
+		public string GetOldFile(string tgs_idtugas)
+		{
+			try
+			{
+				string query = "SELECT tgs_filetugas FROM pkm_trtugas WHERE tgs_idtugas = @p1";
+				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", tgs_idtugas);
+				_connection.Open();
+
+				SqlDataReader reader = command.ExecuteReader();
+				string oldFile = null;
+
+				if (reader.Read())
+				{
+					oldFile = reader["tgs_filetugas"].ToString();
+				}
+
+				reader.Close();
+				_connection.Close();
+				return oldFile;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return null; // atau throw exception sesuai kebutuhan
 			}
 		}
 
@@ -74,6 +132,7 @@ namespace PKKMB_API.Repository
 						tgs_tglpemberiantugas = DateTime.Parse(reader["tgs_tglpemberiantugas"].ToString()),
 						tgs_filetugas = reader["tgs_filetugas"].ToString(),
 						tgs_deadline = DateTime.Parse(reader["tgs_deadline"].ToString()),
+						tgs_deskripsi = reader["tgs_deskripsi"].ToString(),
 						tgs_status = reader["tgs_status"].ToString(),
 					};
 
@@ -107,6 +166,7 @@ namespace PKKMB_API.Repository
 				command.Parameters.AddWithValue("@p_tglpemberiantugas", tugasModel.tgs_tglpemberiantugas);
 				command.Parameters.AddWithValue("@p_filetugas", tugasModel.tgs_filetugas);
 				command.Parameters.AddWithValue("@p_deadline", tugasModel.tgs_deadline);
+				command.Parameters.AddWithValue("@p_deskripsi", tugasModel.tgs_deskripsi);
 				command.Parameters.AddWithValue("@p_status", tugasModel.tgs_status);
 
 				_connection.Open();
@@ -132,14 +192,14 @@ namespace PKKMB_API.Repository
 		{
 			try
 			{
-				using SqlCommand command = new SqlCommand("sp_UpdateTugas", _connection);
+				using SqlCommand command = new SqlCommand("sp_UpdateTugasWithoutFile", _connection);
 				command.CommandType = CommandType.StoredProcedure;
 				command.Parameters.AddWithValue("@p_idtugas", tugas.tgs_idtugas);
 				command.Parameters.AddWithValue("@p_nim", tugas.tgs_nim);
 				command.Parameters.AddWithValue("@p_jenistugas", tugas.tgs_jenistugas);
 				command.Parameters.AddWithValue("@p_tglpemberiantugas", tugas.tgs_tglpemberiantugas);
-				command.Parameters.AddWithValue("@p_filetugas", tugas.tgs_filetugas);
 				command.Parameters.AddWithValue("@p_deadline", tugas.tgs_deadline);
+				command.Parameters.AddWithValue("@p_deskripsi", tugas.tgs_deskripsi);
 				command.Parameters.AddWithValue("@p_status", tugas.tgs_status);
 
 				_connection.Open();
@@ -147,7 +207,7 @@ namespace PKKMB_API.Repository
 				_connection.Close();
 
 				_response.status = 200;
-				_response.messages = "Tugas berhasil diupdate";
+				_response.messages = "Tugas berhasil diubah";
 				_response.data = tugas;
 			}
 			catch (Exception ex)
@@ -156,6 +216,136 @@ namespace PKKMB_API.Repository
 				_response.status = 500;
 				_response.messages = "Gagal mengupdate Tugas, " + ex.Message;
 				return _response;
+			}
+
+			return _response;
+		}
+
+		public ResponseModel UploadFile(string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi)
+		{
+			try
+			{
+				// Mendapatkan direktori tempat menyimpan file
+				string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "File_Tugas\\TugasMahasiswa");
+
+				// Mengecek apakah direktori sudah ada, jika belum, maka membuatnya
+				if (!Directory.Exists(uploadDir))
+				{
+					Directory.CreateDirectory(uploadDir);
+				}
+
+				// Membuat nama file yang unik untuk menghindari konflik
+				string uniqueFileName = file.FileName;
+
+				// Membuat path file tujuan
+				string filePath = Path.Combine(uploadDir, uniqueFileName);
+
+				// Menyimpan file ke server
+				using (var fileStream = new FileStream(filePath, FileMode.Create))
+				{
+					file.CopyTo(fileStream);
+				}
+
+				SqlCommand command = new SqlCommand("sp_TambahTugas", _connection);
+				command.CommandType = CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_nim", tgs_nim);
+				command.Parameters.AddWithValue("@p_jenistugas", tgs_jenistugas);
+				command.Parameters.AddWithValue("@p_tglpemberiantugas", tgs_tglpemberiantugas);
+				command.Parameters.AddWithValue("@p_filetugas", uniqueFileName);
+				command.Parameters.AddWithValue("@p_deadline", tgs_deadline);
+				command.Parameters.AddWithValue("@p_deskripsi", tgs_deskripsi);
+				command.Parameters.AddWithValue("@p_status", "Aktif");
+
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+
+				_response.status = 200;
+				_response.messages = "Tugas berhasil diunggah";
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				_response.status = 500;
+				_response.messages = "Terjadi kesalahan saat mengunggah file: " + ex.Message;
+				_response.data = null;
+			}
+
+			return _response;
+		}
+
+		public ResponseModel UbahFile(string tgs_idtugas, string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
+		{
+			try
+			{
+				// Mendapatkan direktori tempat menyimpan file
+				string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "File_Tugas\\TugasMahasiswa");
+				string oldFile = GetOldFile(tgs_idtugas);
+				string oldFilePath = Path.Combine(uploadDir, oldFile);
+
+				// Mengecek apakah direktori sudah ada, jika belum, maka membuatnya
+				if (!Directory.Exists(uploadDir))
+				{
+					Directory.CreateDirectory(uploadDir);
+				}
+
+				// Membuat nama file yang unik untuk menghindari konflik
+				string uniqueFileName;
+
+				if (file != null)
+				{
+					// Jika file tidak null, gunakan nama file baru
+					uniqueFileName = file.FileName;
+
+					// Membuat path file tujuan
+					string filePath = Path.Combine(uploadDir, uniqueFileName);
+
+					// Menyimpan file ke server
+					using (var fileStream = new FileStream(filePath, FileMode.Create))
+					{
+						file.CopyTo(fileStream);
+					}
+
+					// Hapus file lama jika ada
+					if (System.IO.File.Exists(oldFilePath))
+					{
+						System.IO.File.Delete(oldFilePath);
+					}
+				}
+				else
+				{
+					// Jika file null, gunakan nama file lama
+					uniqueFileName = oldFile;
+				}
+
+				SqlCommand command = new SqlCommand("sp_UpdateTugas", _connection);
+				command.CommandType = CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_idtugas", tgs_idtugas);
+				command.Parameters.AddWithValue("@p_nim", tgs_nim);
+				command.Parameters.AddWithValue("@p_jenistugas", tgs_jenistugas);
+				command.Parameters.AddWithValue("@p_tglpemberiantugas", tgs_tglpemberiantugas);
+
+				// Pass the correct file name to the stored procedure
+				command.Parameters.AddWithValue("@p_filetugas", uniqueFileName);
+
+				command.Parameters.AddWithValue("@p_deadline", tgs_deadline);
+				command.Parameters.AddWithValue("@p_deskripsi", tgs_deskripsi);
+				command.Parameters.AddWithValue("@p_status", tgs_status);
+
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+
+				_response.status = 200;
+				_response.messages = "Tugas berhasil diubah";
+				_response.data = oldFile;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				_response.status = 500;
+				_response.messages = "Terjadi kesalahan saat mengubah tugas: " + ex.Message;
+				_response.data = null;
 			}
 
 			return _response;

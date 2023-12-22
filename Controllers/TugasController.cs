@@ -18,6 +18,36 @@ namespace PKKMB_API.Controllers
 			tugasRepository = new TugasRepository(configuration);
 		}
 
+		[HttpGet("/NextId", Name = "NextId")]
+		public IActionResult NextId()
+		{
+			var role = HttpContext.Request.Cookies["role"];
+			try
+			{
+				/*if (role == "Mahasiswa")
+				{*/
+				var tugasList = tugasRepository.NextId();
+				if (tugasList != null)
+				{
+					return Ok(new { Status = 200, Messages = "Berhasil Menampilkan Data Tugas", Data = tugasList });
+				}
+				else
+				{
+					return StatusCode(404, new { Status = 404, Messages = "Data Tugas Tidak Ditemukan", Data = tugasList });
+				}
+				/*}
+				else
+				{
+					return Unauthorized(new { Status = 401, Messages = "Unauthorized", Data = new Object() });
+				}*/
+			}
+			catch (Exception ex)
+			{
+				// Handle common errors
+				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan Data Tugas", Data = ex.Message });
+			}
+		}
+
 		[HttpGet("/getalltugas", Name = "GetAllTugas")]
 		public IActionResult GetAllTugas()
 		{
@@ -104,6 +134,58 @@ namespace PKKMB_API.Controllers
 				response.messages = "Failed, " + ex.Message;
 			}
 			return Ok(response);
+		}
+
+		[HttpPost("Upload")]
+		public IActionResult UploadFile(string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi)
+		{
+			var result = tugasRepository.UploadFile(tgs_nim, tgs_jenistugas, tgs_tglpemberiantugas, file, tgs_deadline, tgs_deskripsi);
+			if (result.status == 200)
+			{
+				return Ok(result);
+			}
+			else if (result.status == 404)
+			{
+				return NotFound(result);
+			}
+			else
+			{
+				return StatusCode(500, result);
+			}
+		}
+
+		[HttpPut("Ubah")]
+		public IActionResult UbahFile(string tgs_idtugas, string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
+		{
+			var result = tugasRepository.UbahFile(tgs_idtugas, tgs_nim, tgs_jenistugas, tgs_tglpemberiantugas, file, tgs_deadline, tgs_deskripsi, tgs_status);
+			if (result.status == 200)
+			{
+				return Ok(result);
+			}
+			else if (result.status == 404)
+			{
+				return NotFound(result);
+			}
+			else
+			{
+				return StatusCode(500, result);
+			}
+		}
+
+		[HttpPost("Download")]
+		public IActionResult DownloadFile([FromBody] string fileName)
+		{
+			var filePath = Path.Combine("C:\\RPL\\PKKMB-API\\File_Tugas\\TugasMahasiswa", fileName);
+
+			if (System.IO.File.Exists(filePath))
+			{
+				var fileBytes = System.IO.File.ReadAllBytes(filePath);
+				return File(fileBytes, "application/octet-stream", fileName);
+			}
+			else
+			{
+				return NotFound(); // File not found response
+			}
 		}
 	}
 }
