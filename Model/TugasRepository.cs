@@ -350,5 +350,206 @@ namespace PKKMB_API.Repository
 
 			return _response;
 		}
+
+		public List<DetailTugasModel> GetAllDataDetail()
+		{
+			List<DetailTugasModel> detailList = new List<DetailTugasModel>();
+			try
+			{
+				string query = "SELECT * FROM pkm_trdetailtugas";
+				SqlCommand command = new SqlCommand(query, _connection);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+				while (reader.Read())
+				{
+					DetailTugasModel detail = new DetailTugasModel
+					{
+						dts_iddetail = reader["dts_iddetail"].ToString(),
+						dts_nopendaftaram = reader["dts_nopendaftaram"].ToString(),
+						dts_filetugas = reader["dts_filetugas"].ToString(),
+						dts_waktupengumpulam = DateTime.Parse(reader["dts_waktupengumpulam"].ToString()),
+						dts_nilaitugas = Double.Parse(reader["dts_nilaitugas"].ToString()),
+					};
+					detailList.Add(detail);
+				}
+				reader.Close();
+				_connection.Close();
+				return detailList;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return null;
+			}
+		}
+
+		public DetailTugasModel GetDataDetail(string dts_idtugas)
+		{
+			DetailTugasModel detail = new DetailTugasModel();
+			try
+			{
+				string query = "SELECT * FROM pkm_trdetailtugas WHERE dts_idtugas = @p1";
+				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", dts_idtugas);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+
+				if (reader.Read())
+				{
+					detail = new DetailTugasModel
+					{
+						dts_iddetail = reader["dts_iddetail"].ToString(),
+						dts_nopendaftaram = reader["dts_nopendaftaram"].ToString(),
+						dts_filetugas = reader["dts_filetugas"].ToString(),
+						dts_waktupengumpulam = DateTime.Parse(reader["dts_waktupengumpulam"].ToString()),
+						dts_nilaitugas = Double.Parse(reader["dts_nilaitugas"].ToString()),
+					};
+
+					reader.Close();
+					_connection.Close();
+					return detail;
+				}
+				else
+				{
+					// Tugas not found
+					reader.Close();
+					_connection.Close();
+					return null;
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return null;
+			}
+		}
+
+		public ResponseModel UploadTugasMahasiswa(string dts_iddetail, string dts_nopendaftaram, IFormFile file, DateTime dts_waktupengumpulam, double dts_nilaitugas)
+		{
+			try
+			{
+				// Mendapatkan direktori tempat menyimpan file
+				string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "File_Tugas\\PengumpulanTugas");
+
+				// Mengecek apakah direktori sudah ada, jika belum, maka membuatnya
+				if (!Directory.Exists(uploadDir))
+				{
+					Directory.CreateDirectory(uploadDir);
+				}
+
+				// Membuat nama file yang unik untuk menghindari konflik
+				string uniqueFileName = file.FileName;
+
+				// Membuat path file tujuan
+				string filePath = Path.Combine(uploadDir, uniqueFileName);
+
+				// Menyimpan file ke server
+				using (var fileStream = new FileStream(filePath, FileMode.Create))
+				{
+					file.CopyTo(fileStream);
+				}
+
+				SqlCommand command = new SqlCommand("sp_TambahTugasDetail", _connection);
+				command.CommandType = CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_idtugas", dts_iddetail);
+				command.Parameters.AddWithValue("@p_nopendaftaram", dts_nopendaftaram);
+				command.Parameters.AddWithValue("@p_filetugas", uniqueFileName);
+				command.Parameters.AddWithValue("@p_waktupengumpulan", dts_waktupengumpulam);
+				command.Parameters.AddWithValue("@p_nilaitugas", dts_nilaitugas);
+
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+
+				_response.status = 200;
+				_response.messages = "Tugas berhasil diunggah";
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				_response.status = 500;
+				_response.messages = "Terjadi kesalahan saat mengunggah file: " + ex.Message;
+				_response.data = null;
+			}
+
+			return _response;
+		}
+
+		public ResponseModel Ubah(string tgs_idtugas, string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
+		{
+			try
+			{
+				// Mendapatkan direktori tempat menyimpan file
+				string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "File_Tugas\\TugasMahasiswa");
+				string oldFile = GetOldFile(tgs_idtugas);
+				string oldFilePath = Path.Combine(uploadDir, oldFile);
+
+				// Mengecek apakah direktori sudah ada, jika belum, maka membuatnya
+				if (!Directory.Exists(uploadDir))
+				{
+					Directory.CreateDirectory(uploadDir);
+				}
+
+				// Membuat nama file yang unik untuk menghindari konflik
+				string uniqueFileName;
+
+				if (file != null)
+				{
+					// Jika file tidak null, gunakan nama file baru
+					uniqueFileName = file.FileName;
+
+					// Membuat path file tujuan
+					string filePath = Path.Combine(uploadDir, uniqueFileName);
+
+					// Menyimpan file ke server
+					using (var fileStream = new FileStream(filePath, FileMode.Create))
+					{
+						file.CopyTo(fileStream);
+					}
+
+					// Hapus file lama jika ada
+					if (System.IO.File.Exists(oldFilePath))
+					{
+						System.IO.File.Delete(oldFilePath);
+					}
+				}
+				else
+				{
+					// Jika file null, gunakan nama file lama
+					uniqueFileName = oldFile;
+				}
+
+				SqlCommand command = new SqlCommand("sp_UpdateTugas", _connection);
+				command.CommandType = CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_idtugas", tgs_idtugas);
+				command.Parameters.AddWithValue("@p_nim", tgs_nim);
+				command.Parameters.AddWithValue("@p_jenistugas", tgs_jenistugas);
+				command.Parameters.AddWithValue("@p_tglpemberiantugas", tgs_tglpemberiantugas);
+
+				// Pass the correct file name to the stored procedure
+				command.Parameters.AddWithValue("@p_filetugas", uniqueFileName);
+
+				command.Parameters.AddWithValue("@p_deadline", tgs_deadline);
+				command.Parameters.AddWithValue("@p_deskripsi", tgs_deskripsi);
+				command.Parameters.AddWithValue("@p_status", tgs_status);
+
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+
+				_response.status = 200;
+				_response.messages = "Tugas berhasil diubah";
+				_response.data = oldFile;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				_response.status = 500;
+				_response.messages = "Terjadi kesalahan saat mengubah tugas: " + ex.Message;
+				_response.data = null;
+			}
+
+			return _response;
+		}
 	}
 }

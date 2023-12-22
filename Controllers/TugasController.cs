@@ -187,5 +187,59 @@ namespace PKKMB_API.Controllers
 				return NotFound(); // File not found response
 			}
 		}
+
+		[HttpGet("/GetAllDetail", Name = "GetAllDetail")]
+		public IActionResult GetAllDetail()
+		{
+			var role = HttpContext.Request.Cookies["role"];
+			try
+			{
+				/*if (role == "Mahasiswa")
+				{*/
+				var detailList = tugasRepository.GetAllDataDetail();
+				if (detailList != null)
+				{
+					return Ok(new { Status = 200, Messages = "Berhasil Menampilkan Data Detail Tugas", Data = detailList });
+				}
+				else
+				{
+					return StatusCode(404, new { Status = 404, Messages = "Data Detail Tugas Tidak Ditemukan", Data = detailList });
+				}
+				/*}
+				else
+				{
+					return Unauthorized(new { Status = 401, Messages = "Unauthorized", Data = new Object() });
+				}*/
+			}
+			catch (Exception ex)
+			{
+				// Handle common errors
+				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan Data Detail Tugas", Data = ex.Message });
+			}
+		}
+
+		[HttpGet("/DataDetailTugas", Name = "DataDetailTugas")]
+		//[Authorize(Roles = "Mahasiswa")]
+		public IActionResult DataDetailTugas(string dts_idtugas)
+		{
+			DetailTugasModel detail = tugasRepository.GetDataDetail(dts_idtugas);
+			try
+			{
+				if (detail != null)
+				{
+					return Ok(new { Status = 200, Messages = "Data Detail Tugas ditemukan", Data = detail });
+				}
+				else
+				{
+					// Data not found
+					return NotFound(new { Status = 404, Messages = "Data Detail Tugas Tidak Ditemukan", Data = new Object() });
+				}
+			}
+			catch (Exception ex)
+			{
+				// General error
+				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Mengambil Data Detail Tugas = " + ex.Message, Data = new Object() });
+			}
+		}
 	}
 }
