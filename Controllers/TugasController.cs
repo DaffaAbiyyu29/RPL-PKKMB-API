@@ -241,5 +241,23 @@ namespace PKKMB_API.Controllers
 				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Mengambil Data Detail Tugas = " + ex.Message, Data = new Object() });
 			}
 		}
+
+		[HttpPost("UploadTugas")]
+		public IActionResult UploadTugas(string dts_iddetail, string dts_nopendaftaram, IFormFile file, DateTime dts_waktupengumpulam, double dts_nilaitugas)
+		{
+			var result = tugasRepository.UploadTugasMahasiswa(dts_iddetail, dts_nopendaftaram, file, dts_waktupengumpulam, dts_nilaitugas);
+			if (result.status == 200)
+			{
+				return Ok(result);
+			}
+			else if (result.status == 404)
+			{
+				return NotFound(result);
+			}
+			else
+			{
+				return StatusCode(500, result);
+			}
+		}
 	}
 }

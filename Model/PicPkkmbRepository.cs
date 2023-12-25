@@ -153,7 +153,7 @@ namespace PKKMB_API.Model
 				command.ExecuteNonQuery();
 				_connection.Close();
 
-				response.status = 200;
+				response.status = 200;	
 				response.messages = "PIC berhasil didaftarkan";
 				response.data = pic;
 			}

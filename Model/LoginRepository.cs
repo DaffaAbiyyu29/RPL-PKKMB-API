@@ -215,34 +215,34 @@ namespace PKKMB_API.Model
 			{
 				return new[]
 				{
-				new Claim("mhs_nopendaftaran", mhs.mhs_nopendaftaran),
-				new Claim(JwtRegisteredClaimNames.Name, mhs.mhs_namalengkap),
-				new Claim(ClaimTypes.Role, "Mahasiswa"),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                // Add more claims specific to MahasiswaBaruModel if needed
-            };
+					new Claim("id", mhs.mhs_nopendaftaran),
+					new Claim(JwtRegisteredClaimNames.Name, mhs.mhs_namalengkap),
+					new Claim(ClaimTypes.Role, "Mahasiswa"),
+					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+					// Add more claims specific to MahasiswaBaruModel if needed
+				};
 			}
 			else if (user is PanitiaKesekretariatanModel ksk)
 			{
 				return new[]
 				{
-				new Claim("ksk_nim", ksk.ksk_nim),
-				new Claim(JwtRegisteredClaimNames.Name, ksk.ksk_nama),
-				new Claim(ClaimTypes.Role, "Panitia Kesekretariatan"),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                // Add more claims specific to PanitiaKesekretariatanModel if needed
-            };
+					new Claim("id", ksk.ksk_nim),
+					new Claim(JwtRegisteredClaimNames.Name, ksk.ksk_nama),
+					new Claim(ClaimTypes.Role, "Panitia Kesekretariatan"),
+					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+					// Add more claims specific to PanitiaKesekretariatanModel if needed
+				};
 			}
 			else if (user is PicPkkmbModel pic)
 			{
 				return new[]
 				{
-				new Claim("pic_nokaryawan", pic.pic_nokaryawan),
-				new Claim(JwtRegisteredClaimNames.Name, pic.pic_nama),
-				new Claim(ClaimTypes.Role, "PIC PKKMB"),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                // Add more claims specific to PicPkkmbModel if needed
-            };
+					new Claim("id", pic.pic_nokaryawan),
+					new Claim(JwtRegisteredClaimNames.Name, pic.pic_nama),
+					new Claim(ClaimTypes.Role, "PIC PKKMB"),
+					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+					// Add more claims specific to PicPkkmbModel if needed
+				};
 			}
 
 			return Array.Empty<Claim>();

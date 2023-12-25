@@ -475,7 +475,7 @@ namespace PKKMB_API.Repository
 			return _response;
 		}
 
-		public ResponseModel Ubah(string tgs_idtugas, string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
+		public ResponseModel UbahTugasMahasiswa(string tgs_idtugas, string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
 		{
 			try
 			{
