@@ -72,6 +72,7 @@ namespace PKKMB_API.Controllers
 			JadwalModel jadwal = new JadwalModel
 			{
 				jdl_idjadwal = jadwalModel.jdl_idjadwal,
+				jdl_nim = jadwalModel.jdl_nim,
 				jdl_tglpelaksanaan = jadwalModel.jdl_tglpelaksanaan,
 				jdl_waktupelaksanaan = jadwalModel.jdl_waktupelaksanaan,
 				jdl_agenda = jadwalModel.jdl_agenda,

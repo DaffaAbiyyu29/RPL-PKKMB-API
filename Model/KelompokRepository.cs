@@ -89,6 +89,47 @@ namespace PKKMB_API.Model
 			}
 		}
 
+		public KelompokModel getDataByNim(string kmk_nim)
+		{
+			KelompokModel kel = new KelompokModel();
+			try
+			{
+				string query = "SELECT * FROM pkm_mskelompok WHERE kmk_nim = @p1";
+				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", kmk_nim);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+
+				if (reader.Read())
+				{
+					kel = new KelompokModel
+					{
+						kmk_idkelompok = reader["kmk_idkelompok"].ToString(),
+						kmk_namakelompok = reader["kmk_namakelompok"].ToString(),
+						kmk_nim = reader["kmk_nim"].ToString(),
+						kmk_idruangan = reader["kmk_idruangan"].ToString(),
+						kmk_status = reader["kmk_status"].ToString(),
+					};
+
+					reader.Close();
+					_connection.Close();
+					return kel;
+				}
+				else
+				{
+					// User not found
+					reader.Close();
+					_connection.Close();
+					return null;
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return null;
+			}
+		}
+
 		public ResponseModel TambahKelompok([FromBody] KelompokModel kel)
 		{
 			try

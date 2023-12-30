@@ -29,6 +29,7 @@ namespace PKKMB_API.Model
 					JadwalModel jadwal = new JadwalModel
 					{
 						jdl_idjadwal = reader["jdl_idjadwal"].ToString(),
+						jdl_nim = reader["jdl_nim"].ToString(),
 						jdl_tglpelaksanaan = DateTime.Parse(reader["jdl_tglpelaksanaan"].ToString()),
 						jdl_waktupelaksanaan = reader["jdl_waktupelaksanaan"].ToString(),
 						jdl_agenda = reader["jdl_agenda"].ToString(),
@@ -64,6 +65,7 @@ namespace PKKMB_API.Model
 					jdl = new JadwalModel
 					{
 						jdl_idjadwal = reader["jdl_idjadwal"].ToString(),
+						jdl_nim = reader["jdl_nim"].ToString(),
 						jdl_tglpelaksanaan = DateTime.Parse(reader["jdl_tglpelaksanaan"].ToString()),
 						jdl_waktupelaksanaan = reader["jdl_waktupelaksanaan"].ToString(),
 						jdl_agenda = reader["jdl_agenda"].ToString(),
@@ -96,6 +98,7 @@ namespace PKKMB_API.Model
 			{
 				SqlCommand command = new SqlCommand("sp_TambahJadwal", _connection);
 				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_nim", jadwalModel.jdl_nim);
 				command.Parameters.AddWithValue("@p_tglpelaksanaan", jadwalModel.jdl_tglpelaksanaan);
 				command.Parameters.AddWithValue("@p_waktupelaksanaan", jadwalModel.jdl_waktupelaksanaan);
 				command.Parameters.AddWithValue("@p_agenda", jadwalModel.jdl_agenda);
@@ -128,7 +131,8 @@ namespace PKKMB_API.Model
 				using SqlCommand command = new SqlCommand("sp_UpdateJadwal", _connection);
 				command.CommandType = CommandType.StoredProcedure;
 
-				command.Parameters.AddWithValue("@p_idjadwal", jdl.jdl_idjadwal); // Assuming jdl_idjadwal is an INT, adjust data type accordingly
+				command.Parameters.AddWithValue("@p_idjadwal", jdl.jdl_idjadwal);
+				command.Parameters.AddWithValue("@p_nim", jdl.jdl_nim);
 				command.Parameters.AddWithValue("@p_tglpelaksanaan", jdl.jdl_tglpelaksanaan);
 				command.Parameters.AddWithValue("@p_waktupelaksanaan", jdl.jdl_waktupelaksanaan);
 				command.Parameters.AddWithValue("@p_agenda", jdl.jdl_agenda);

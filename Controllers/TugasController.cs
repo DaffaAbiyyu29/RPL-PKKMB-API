@@ -137,9 +137,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpPost("Upload")]
-		public IActionResult UploadFile(string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi)
+		public IActionResult UploadFile(string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi)
 		{
-			var result = tugasRepository.UploadFile(tgs_nim, tgs_jenistugas, tgs_tglpemberiantugas, file, tgs_deadline, tgs_deskripsi);
+			var result = tugasRepository.UploadFile(tgs_nim, tgs_namatugas, tgs_tglpemberiantugas, file, tgs_deadline, tgs_deskripsi);
 			if (result.status == 200)
 			{
 				return Ok(result);
@@ -262,6 +262,56 @@ namespace PKKMB_API.Controllers
 		public IActionResult UploadTugas(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas)
 		{
 			var result = tugasRepository.UploadTugasMahasiswa(dts_iddetail, dts_nopendaftaran, file, dts_waktupengumpulan, dts_nilaitugas);
+			if (result.status == 200)
+			{
+				return Ok(result);
+			}
+			else if (result.status == 404)
+			{
+				return NotFound(result);
+			}
+			else
+			{
+				return StatusCode(500, result);
+			}
+		}
+
+		[HttpPut("UbahTugas")]
+		public IActionResult UbahTugas(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas)
+		{
+			var result = tugasRepository.UbahTugasMahasiswa(dts_iddetail, dts_nopendaftaran, file, dts_waktupengumpulan, dts_nilaitugas);
+			if (result.status == 200)
+			{
+				return Ok(result);
+			}
+			else if (result.status == 404)
+			{
+				return NotFound(result);
+			}
+			else
+			{
+				return StatusCode(500, result);
+			}
+		}
+
+		[HttpGet("GetDetailTugasByKelompok")]
+		public IActionResult GetDetailTugasByKelompok(string kmk_idkelompok)
+		{
+			try
+			{
+				List<Dictionary<string, object>> detailList = tugasRepository.GetDetailTugasByKelompok(kmk_idkelompok);
+				return Ok(detailList);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Error: {ex.Message}");
+			}
+		}
+
+		[HttpPut("PenilaianTugas")]
+		public IActionResult PenilaianTugas(string dts_iddetail, string dts_nopendaftaran, [FromBody] double dts_nilaitugas)
+		{
+			var result = tugasRepository.PenilaianTugas(dts_iddetail, dts_nopendaftaran, dts_nilaitugas);
 			if (result.status == 200)
 			{
 				return Ok(result);

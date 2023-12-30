@@ -10,6 +10,5 @@
 		public DateTime tgs_deadline { get; set; }
 		public string tgs_deskripsi { get; set; }
 		public string tgs_status { get; set; }
-		//public string tgs_filename { get; set; }
 	}
 }

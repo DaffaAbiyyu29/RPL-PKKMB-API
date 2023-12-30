@@ -61,6 +61,30 @@ namespace PKKMB_API.Controllers
 			}
 		}
 
+		[HttpGet("/GetKelompokByNim", Name = "GetKelompokByNim")]
+		public IActionResult GetKelompokByNim(string kmk_nim)
+		{
+			KelompokModel kel = _kelRepo.getDataByNim(kmk_nim);
+			try
+			{
+				if (kel != null)
+				{
+					return Ok(new { Status = 200, Messages = "Kelompok ditemukan", Data = kel });
+
+				}
+				else
+				{
+					// Account not found
+					return NotFound(new { Status = 404, Messages = "Kelompok Tidak Ditemukan", Data = new Object() });
+				}
+			}
+			catch (Exception ex)
+			{
+				// General error
+				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan Kelompok = " + ex.Message, Data = new Object() });
+			}
+		}
+
 		[HttpPost("/TambahKelompok", Name = "TambahKelompok")]
 		public IActionResult TambahKelompok([FromBody] KelompokModel kel)
 		{
