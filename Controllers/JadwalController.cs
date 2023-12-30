@@ -50,7 +50,6 @@ namespace PKKMB_API.Controllers
 		[HttpPost("/InsertJadwal", Name = "InsertJadwal")]
 		public IActionResult InsertJadwal([FromBody] JadwalModel jadwalModel)
 		{
-
 			try
 			{
 				var result = jadwalRepository.insertJadwal(jadwalModel);

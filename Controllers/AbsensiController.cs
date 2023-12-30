@@ -50,33 +50,23 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpPost("/TambahAbsensi", Name = "TambahAbsensi")]
-		public IActionResult TambahAbsensi([FromBody] AbsensiModel absensi)
+		public IActionResult TambahAbsensi([FromBody] List<AbsensiModel> absensiList)
 		{
-			try
-			{
-				response.status = 200;
-				response.messages = "Berhasil";
-				_absenRepo.tambahAbsensi(absensi);
-			}
-			catch (Exception ex)
-			{
-				response.status = 500;
-				response.messages = "Gagal, " + ex.Message;
-			}
-			return Ok(response);
+			var result = _absenRepo.TambahAbsensi(absensiList);
+			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
 		}
 
 		[HttpPut("/UpdateAbsensi", Name = "UpdateAbsensi")]
 		public IActionResult UpdateAbsensi([FromBody] AbsensiModel absensi)
 		{
-			Absensi absensi1 = new Absensi();
+			AbsensiModel absensi1 = new AbsensiModel();
 			absensi1.abs_idabsensi = absensi.abs_idabsensi;
 			absensi1.abs_nim = absensi.abs_nim;
 			absensi1.abs_nopendaftaran = absensi.abs_nopendaftaran;
 			absensi1.abs_tglkehadiran = absensi.abs_tglkehadiran;
-			absensi1.abs_Statuskehadiran = absensi.abs_statuskehadiran;
-			absensi1.abs_Keterangan = absensi.abs_keterangan;
-			absensi1.abs_Status = absensi.abs_status;
+			absensi1.abs_statuskehadiran = absensi.abs_statuskehadiran;
+			absensi1.abs_keterangan = absensi.abs_keterangan;
+			absensi1.abs_status = absensi.abs_status;
 
 			try
 			{

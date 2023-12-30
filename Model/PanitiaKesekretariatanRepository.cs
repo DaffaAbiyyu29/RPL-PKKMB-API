@@ -53,6 +53,80 @@ namespace PKKMB_API.Model
 			}
 		}
 
+		public List<PanitiaKesekretariatanModel> TampilFasilitator()
+		{
+			List<PanitiaKesekretariatanModel> kskList = new List<PanitiaKesekretariatanModel>();
+			try
+			{
+				string query = "SELECT * FROM view_Fasilitator";
+				SqlCommand command = new SqlCommand(query, _connection);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+				while (reader.Read())
+				{
+					PanitiaKesekretariatanModel ksk = new PanitiaKesekretariatanModel
+					{
+						ksk_nim = reader["ksk_nim"].ToString(),
+						ksk_nama = reader["ksk_nama"].ToString(),
+						ksk_jeniskelamin = reader["ksk_jeniskelamin"].ToString(),
+						ksk_programstudi = reader["ksk_programstudi"].ToString(),
+						ksk_password = reader["ksk_password"].ToString(),
+						ksk_role = reader["ksk_role"].ToString(),
+						ksk_notelepon = reader["ksk_notelepon"].ToString(),
+						ksk_email = reader["ksk_email"].ToString(),
+						ksk_alamat = reader["ksk_alamat"].ToString(),
+						ksk_status = reader["ksk_status"].ToString(),
+					};
+					kskList.Add(ksk);
+				}
+				reader.Close();
+				_connection.Close();
+				return kskList;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Error : " + ex.Message);
+				return null;
+			}
+		}
+
+		public List<PanitiaKesekretariatanModel> TampilKsk()
+		{
+			List<PanitiaKesekretariatanModel> kskList = new List<PanitiaKesekretariatanModel>();
+			try
+			{
+				string query = "SELECT * FROM view_KSK";
+				SqlCommand command = new SqlCommand(query, _connection);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+				while (reader.Read())
+				{
+					PanitiaKesekretariatanModel ksk = new PanitiaKesekretariatanModel
+					{
+						ksk_nim = reader["ksk_nim"].ToString(),
+						ksk_nama = reader["ksk_nama"].ToString(),
+						ksk_jeniskelamin = reader["ksk_jeniskelamin"].ToString(),
+						ksk_programstudi = reader["ksk_programstudi"].ToString(),
+						ksk_password = reader["ksk_password"].ToString(),
+						ksk_role = reader["ksk_role"].ToString(),
+						ksk_notelepon = reader["ksk_notelepon"].ToString(),
+						ksk_email = reader["ksk_email"].ToString(),
+						ksk_alamat = reader["ksk_alamat"].ToString(),
+						ksk_status = reader["ksk_status"].ToString(),
+					};
+					kskList.Add(ksk);
+				}
+				reader.Close();
+				_connection.Close();
+				return kskList;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Error : " + ex.Message);
+				return null;
+			}
+		}
+
 		public List<PanitiaKesekretariatanModel> TampilKskDraft()
 		{
 			List<PanitiaKesekretariatanModel> kskList = new List<PanitiaKesekretariatanModel>();
@@ -236,13 +310,10 @@ namespace PKKMB_API.Model
 		{
 			try
 			{
-				string hashedPassword = BCrypt.Net.BCrypt.HashPassword(ksk.ksk_password, 12);
-
 				string query = "UPDATE pkm_mskesekretariatan " +
 							"SET ksk_nama = @p2, " +
 							"ksk_jeniskelamin = @p3, " +
 							"ksk_programstudi = @p4, " +
-							"ksk_password = @p5, " +
 							"ksk_role = @p6, " +
 							"ksk_notelepon = @p7, " +
 							"ksk_email = @p8, " +
@@ -253,7 +324,6 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p2", ksk.ksk_nama);
 				command.Parameters.AddWithValue("@p3", ksk.ksk_jeniskelamin);
 				command.Parameters.AddWithValue("@p4", ksk.ksk_programstudi);
-				command.Parameters.AddWithValue("@p5", hashedPassword);
 				command.Parameters.AddWithValue("@p6", ksk.ksk_role);
 				command.Parameters.AddWithValue("@p7", ksk.ksk_notelepon);
 				command.Parameters.AddWithValue("@p8", ksk.ksk_email);

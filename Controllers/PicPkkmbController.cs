@@ -62,39 +62,6 @@ namespace PKKMB_API.Controllers
 			}
 		}
 
-		[HttpGet("/loginpic", Name = "loginPic")]
-		public IActionResult loginPic(string pic_npk, string pic_password)
-		{
-			PicPkkmbModel pic = _picRepo.login(pic_npk, pic_password);
-			try
-			{
-				if (pic != null)
-				{
-					if (pic.pic_password != null)
-					{
-						// Password is correct, login successful
-						/*HttpContext.Session.SetString("Peran", "Berhasil");*/
-						return Ok(new { Status = 200, Messages = "Login berhasil", Data = pic });
-					}
-					else
-					{
-						// Password is incorrect
-						return Unauthorized(new { Status = 401, Messages = "Kata Sandi Salah", Data = new Object() });
-					}
-				}
-				else
-				{
-					// Account not found
-					return NotFound(new { Status = 404, Messages = "Akun Tidak Ditemukan", Data = new Object() });
-				}
-			}
-			catch (Exception ex)
-			{
-				// General error
-				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Login = " + ex.Message, Data = new Object() });
-			}
-		}
-
 		[HttpPost("/daftarpic", Name = "DaftarPic")]
 		public IActionResult DaftarPic([FromBody] PicPkkmbModel pic)
 		{

@@ -94,24 +94,25 @@ namespace PKKMB_API.Model
 			}
 		}
 
-		public ResponseModel tambahAbsensi([FromBody] AbsensiModel absensi)
+		public ResponseModel TambahAbsensi(List<AbsensiModel> absensi)
 		{
 			try
 			{
-				//string query = "insert into pkm_trabsensi values (@p1,@p2,@p3,@p4,@p5,@p6, @p7)";
-				SqlCommand command = new SqlCommand("sp_TambahAbsensi", _connection);
-				command.CommandType = System.Data.CommandType.StoredProcedure;
-				command.Parameters.AddWithValue("@p_nim", absensi.abs_nim);
-				command.Parameters.AddWithValue("@p_nopendaftaran", absensi.abs_nopendaftaran);
-				command.Parameters.AddWithValue("@p_tglkehadiran", absensi.abs_tglkehadiran);
-				command.Parameters.AddWithValue("@p_statuskehadiran", absensi.abs_statuskehadiran);
-				command.Parameters.AddWithValue("@p_keterangan", absensi.abs_keterangan);
-				command.Parameters.AddWithValue("@p_status", absensi.abs_status);
-
 				_connection.Open();
-				command.ExecuteNonQuery();
-				_connection.Close();
+				foreach (var absensiItem in absensi)
+				{
+					//string query = "insert into pkm_trabsensi values (@p1,@p2,@p3,@p4,@p5,@p6, @p7)";
+					SqlCommand command = new SqlCommand("sp_TambahAbsensi", _connection);
+					command.CommandType = System.Data.CommandType.StoredProcedure;
+					command.Parameters.AddWithValue("@p_nim", absensiItem.abs_nim);
+					command.Parameters.AddWithValue("@p_nopendaftaran", absensiItem.abs_nopendaftaran);
+					command.Parameters.AddWithValue("@p_tglkehadiran", absensiItem.abs_tglkehadiran);
+					command.Parameters.AddWithValue("@p_statuskehadiran", absensiItem.abs_statuskehadiran);
+					command.Parameters.AddWithValue("@p_keterangan", absensiItem.abs_keterangan);
+					command.Parameters.AddWithValue("@p_status", absensiItem.abs_status);
 
+					command.ExecuteNonQuery();
+				}
 				//string message = (string)command.Parameters["@ErrorMessage"].Value;
 				response.status = 200;
 				response.messages = "Absensi Berhasil";
@@ -121,6 +122,10 @@ namespace PKKMB_API.Model
 				Console.WriteLine(ex.Message);
 				response.status = 500;
 				response.messages = ex.Message;
+			}
+			finally
+			{
+				_connection.Close();
 			}
 
 			return response;

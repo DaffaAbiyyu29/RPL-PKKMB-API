@@ -38,6 +38,50 @@ namespace PKKMB_API.Controllers
 			}
 		}
 
+		[HttpGet("/TampilFasilitator", Name = "TampilFasilitator")]
+		public IActionResult TampilFasilitator()
+		{
+			var ksk = _kskRepo.TampilFasilitator();
+			try
+			{
+				if (ksk != null)
+				{
+					return Ok(new { Status = 200, Messages = "Berhasil Menampilkan Data Panitia Kesekretariatan Aktif", Data = ksk });
+				}
+				else
+				{
+					return StatusCode(404, new { Status = 404, Messages = "Belum Ada Panitia Kesekretariatan Yang Terdaftar", Data = ksk });
+				}
+			}
+			catch (Exception ex)
+			{
+				// Tangani kesalahan umum
+				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan Data Panitia Kesekretariatan", Data = ex.Message });
+			}
+		}
+
+		[HttpGet("/TampilKsk", Name = "TampilKsk")]
+		public IActionResult TampilKsk()
+		{
+			var ksk = _kskRepo.TampilKsk();
+			try
+			{
+				if (ksk != null)
+				{
+					return Ok(new { Status = 200, Messages = "Berhasil Menampilkan Data Panitia Kesekretariatan Aktif", Data = ksk });
+				}
+				else
+				{
+					return StatusCode(404, new { Status = 404, Messages = "Belum Ada Panitia Kesekretariatan Yang Terdaftar", Data = ksk });
+				}
+			}
+			catch (Exception ex)
+			{
+				// Tangani kesalahan umum
+				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan Data Panitia Kesekretariatan", Data = ex.Message });
+			}
+		}
+
 		[HttpGet("/TampilKskDraft", Name = "TampilKskDraft")]
 		public IActionResult TampilKskDraft()
 		{

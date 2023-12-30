@@ -23,17 +23,17 @@ namespace PKKMB_API.Controllers
 
 				if (kel != null)
 				{
-					return Ok(new { Status = 200, Messages = "Berhasil Menambah Kelompok", Data = kel });
+					return Ok(new { Status = 200, Messages = "Berhasil Menampilkan Kelompok", Data = kel });
 				}
 				else
 				{
-					return StatusCode(404, new { Status = 404, Messages = "Gagal Menambah Kelompok", Data = kel });
+					return StatusCode(404, new { Status = 404, Messages = "Gagal Menampilkan Kelompok", Data = kel });
 				}
 			}
 			catch (Exception ex)
 			{
 				// Tangani kesalahan umum
-				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan Data Panitia Kesekretariatan", Data = ex.Message });
+				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan Data Kelompok", Data = ex.Message });
 			}
 		}
 
@@ -57,7 +57,7 @@ namespace PKKMB_API.Controllers
 			catch (Exception ex)
 			{
 				// General error
-				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menambahkan Kelompok = " + ex.Message, Data = new Object() });
+				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan Kelompok = " + ex.Message, Data = new Object() });
 			}
 		}
 
@@ -73,6 +73,27 @@ namespace PKKMB_API.Controllers
 		{
 			var result = _kelRepo.UpdateKelompok(kel);
 			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+		}
+
+		[HttpGet("/GetAnggotaKelompok", Name = "GetAnggotaKelompok")]
+		public IActionResult GetAnggotaKelompok(string kmk_idkelompok)
+		{
+			try
+			{
+				var mhsBaru = _kelRepo.getAnggotaKelompok(kmk_idkelompok);
+				if (mhsBaru != null)
+				{
+					return Ok(new { Status = 200, Messages = "Berhasil Menampilkan Data Mahasiswa", Data = mhsBaru });
+				}
+				else
+				{
+					return StatusCode(404, new { Status = 404, Messages = "Data Mahasiswa Tidak Ditemukan", Data = mhsBaru });
+				}
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan Data Mahasiswa", Data = ex.Message });
+			}
 		}
 	}
 }

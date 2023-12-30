@@ -153,7 +153,7 @@ namespace PKKMB_API.Model
 				command.ExecuteNonQuery();
 				_connection.Close();
 
-				response.status = 200;	
+				response.status = 200;
 				response.messages = "PIC berhasil didaftarkan";
 				response.data = pic;
 			}
@@ -172,16 +172,12 @@ namespace PKKMB_API.Model
 		{
 			try
 			{
-				string hashedPassword = BCrypt.Net.BCrypt.HashPassword(pic.pic_password, 12);
-
 				string query = "UPDATE pkm_mspicpkkmb " +
-							"SET pic_nama = @p2, " +
-							"pic_password = @p3 " +
+							"SET pic_nama = @p2 " +
 							"WHERE pic_nokaryawan= @p1";
 				using SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p1", pic.pic_nokaryawan);
 				command.Parameters.AddWithValue("@p2", pic.pic_nama);
-				command.Parameters.AddWithValue("@p3", hashedPassword);
 
 
 				_connection.Open();

@@ -188,7 +188,23 @@ namespace PKKMB_API.Controllers
 			}
 		}
 
-		[HttpGet("/GetAllDetail", Name = "GetAllDetail")]
+		[HttpPost("DownloadTugasMahasiswa")]
+		public IActionResult DownloadTugasMahasiswa([FromBody] string fileName)
+		{
+			var filePath = Path.Combine("C:\\RPL\\PKKMB-API\\File_Tugas\\PengumpulanTugas", fileName);
+
+			if (System.IO.File.Exists(filePath))
+			{
+				var fileBytes = System.IO.File.ReadAllBytes(filePath);
+				return File(fileBytes, "application/octet-stream", fileName);
+			}
+			else
+			{
+				return NotFound(); // File not found response
+			}
+		}
+
+		[HttpGet("GetAllDetail", Name = "GetAllDetail")]
 		public IActionResult GetAllDetail()
 		{
 			var role = HttpContext.Request.Cookies["role"];
@@ -218,11 +234,11 @@ namespace PKKMB_API.Controllers
 			}
 		}
 
-		[HttpGet("/DataDetailTugas", Name = "DataDetailTugas")]
+		[HttpGet("DataDetailTugas", Name = "DataDetailTugas")]
 		//[Authorize(Roles = "Mahasiswa")]
-		public IActionResult DataDetailTugas(string dts_idtugas)
+		public IActionResult DataDetailTugas(string dts_iddetail, string dts_nopendaftaran)
 		{
-			DetailTugasModel detail = tugasRepository.GetDataDetail(dts_idtugas);
+			DetailTugasModel detail = tugasRepository.GetDataDetail(dts_iddetail, dts_nopendaftaran);
 			try
 			{
 				if (detail != null)
@@ -243,9 +259,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpPost("UploadTugas")]
-		public IActionResult UploadTugas(string dts_iddetail, string dts_nopendaftaram, IFormFile file, DateTime dts_waktupengumpulam, double dts_nilaitugas)
+		public IActionResult UploadTugas(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas)
 		{
-			var result = tugasRepository.UploadTugasMahasiswa(dts_iddetail, dts_nopendaftaram, file, dts_waktupengumpulam, dts_nilaitugas);
+			var result = tugasRepository.UploadTugasMahasiswa(dts_iddetail, dts_nopendaftaran, file, dts_waktupengumpulan, dts_nilaitugas);
 			if (result.status == 200)
 			{
 				return Ok(result);

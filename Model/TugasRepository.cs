@@ -37,7 +37,7 @@ namespace PKKMB_API.Repository
 					{
 						tgs_idtugas = reader["tgs_idtugas"].ToString(),
 						tgs_nim = reader["tgs_nim"].ToString(),
-						tgs_jenistugas = reader["tgs_jenistugas"].ToString(),
+						tgs_namatugas = reader["tgs_namatugas"].ToString(),
 						tgs_tglpemberiantugas = DateTime.Parse(reader["tgs_tglpemberiantugas"].ToString()),
 						tgs_filetugas = reader["tgs_filetugas"].ToString(),
 						tgs_deadline = DateTime.Parse(reader["tgs_deadline"].ToString()),
@@ -128,7 +128,7 @@ namespace PKKMB_API.Repository
 					{
 						tgs_idtugas = reader["tgs_idtugas"].ToString(),
 						tgs_nim = reader["tgs_nim"].ToString(),
-						tgs_jenistugas = reader["tgs_jenistugas"].ToString(),
+						tgs_namatugas = reader["tgs_namatugas"].ToString(),
 						tgs_tglpemberiantugas = DateTime.Parse(reader["tgs_tglpemberiantugas"].ToString()),
 						tgs_filetugas = reader["tgs_filetugas"].ToString(),
 						tgs_deadline = DateTime.Parse(reader["tgs_deadline"].ToString()),
@@ -162,7 +162,7 @@ namespace PKKMB_API.Repository
 				SqlCommand command = new SqlCommand("sp_TambahTugas", _connection);
 				command.CommandType = CommandType.StoredProcedure;
 				command.Parameters.AddWithValue("@p_nim", tugasModel.tgs_nim);
-				command.Parameters.AddWithValue("@p_jenistugas", tugasModel.tgs_jenistugas);
+				command.Parameters.AddWithValue("@p_namatugas", tugasModel.tgs_namatugas);
 				command.Parameters.AddWithValue("@p_tglpemberiantugas", tugasModel.tgs_tglpemberiantugas);
 				command.Parameters.AddWithValue("@p_filetugas", tugasModel.tgs_filetugas);
 				command.Parameters.AddWithValue("@p_deadline", tugasModel.tgs_deadline);
@@ -196,7 +196,7 @@ namespace PKKMB_API.Repository
 				command.CommandType = CommandType.StoredProcedure;
 				command.Parameters.AddWithValue("@p_idtugas", tugas.tgs_idtugas);
 				command.Parameters.AddWithValue("@p_nim", tugas.tgs_nim);
-				command.Parameters.AddWithValue("@p_jenistugas", tugas.tgs_jenistugas);
+				command.Parameters.AddWithValue("@p_namatugas", tugas.tgs_namatugas);
 				command.Parameters.AddWithValue("@p_tglpemberiantugas", tugas.tgs_tglpemberiantugas);
 				command.Parameters.AddWithValue("@p_deadline", tugas.tgs_deadline);
 				command.Parameters.AddWithValue("@p_deskripsi", tugas.tgs_deskripsi);
@@ -221,7 +221,7 @@ namespace PKKMB_API.Repository
 			return _response;
 		}
 
-		public ResponseModel UploadFile(string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi)
+		public ResponseModel UploadFile(string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi)
 		{
 			try
 			{
@@ -249,7 +249,7 @@ namespace PKKMB_API.Repository
 				SqlCommand command = new SqlCommand("sp_TambahTugas", _connection);
 				command.CommandType = CommandType.StoredProcedure;
 				command.Parameters.AddWithValue("@p_nim", tgs_nim);
-				command.Parameters.AddWithValue("@p_jenistugas", tgs_jenistugas);
+				command.Parameters.AddWithValue("@p_namatugas", tgs_namatugas);
 				command.Parameters.AddWithValue("@p_tglpemberiantugas", tgs_tglpemberiantugas);
 				command.Parameters.AddWithValue("@p_filetugas", uniqueFileName);
 				command.Parameters.AddWithValue("@p_deadline", tgs_deadline);
@@ -274,7 +274,7 @@ namespace PKKMB_API.Repository
 			return _response;
 		}
 
-		public ResponseModel UbahFile(string tgs_idtugas, string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
+		public ResponseModel UbahFile(string tgs_idtugas, string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
 		{
 			try
 			{
@@ -322,7 +322,7 @@ namespace PKKMB_API.Repository
 				command.CommandType = CommandType.StoredProcedure;
 				command.Parameters.AddWithValue("@p_idtugas", tgs_idtugas);
 				command.Parameters.AddWithValue("@p_nim", tgs_nim);
-				command.Parameters.AddWithValue("@p_jenistugas", tgs_jenistugas);
+				command.Parameters.AddWithValue("@p_namatugas", tgs_namatugas);
 				command.Parameters.AddWithValue("@p_tglpemberiantugas", tgs_tglpemberiantugas);
 
 				// Pass the correct file name to the stored procedure
@@ -365,9 +365,9 @@ namespace PKKMB_API.Repository
 					DetailTugasModel detail = new DetailTugasModel
 					{
 						dts_iddetail = reader["dts_iddetail"].ToString(),
-						dts_nopendaftaram = reader["dts_nopendaftaram"].ToString(),
+						dts_nopendaftaran = reader["dts_nopendaftaran"].ToString(),
 						dts_filetugas = reader["dts_filetugas"].ToString(),
-						dts_waktupengumpulam = DateTime.Parse(reader["dts_waktupengumpulam"].ToString()),
+						dts_waktupengumpulan = DateTime.Parse(reader["dts_waktupengumpulan"].ToString()),
 						dts_nilaitugas = Double.Parse(reader["dts_nilaitugas"].ToString()),
 					};
 					detailList.Add(detail);
@@ -383,14 +383,15 @@ namespace PKKMB_API.Repository
 			}
 		}
 
-		public DetailTugasModel GetDataDetail(string dts_idtugas)
+		public DetailTugasModel GetDataDetail(string dts_iddetail, string dts_nopendaftaran)
 		{
 			DetailTugasModel detail = new DetailTugasModel();
 			try
 			{
-				string query = "SELECT * FROM pkm_trdetailtugas WHERE dts_idtugas = @p1";
+				string query = "SELECT * FROM pkm_trdetailtugas WHERE dts_iddetail = @p1 AND dts_nopendaftaran = @p2";
 				SqlCommand command = new SqlCommand(query, _connection);
-				command.Parameters.AddWithValue("@p1", dts_idtugas);
+				command.Parameters.AddWithValue("@p1", dts_iddetail);
+				command.Parameters.AddWithValue("@p2", dts_nopendaftaran);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 
@@ -399,9 +400,9 @@ namespace PKKMB_API.Repository
 					detail = new DetailTugasModel
 					{
 						dts_iddetail = reader["dts_iddetail"].ToString(),
-						dts_nopendaftaram = reader["dts_nopendaftaram"].ToString(),
+						dts_nopendaftaran = reader["dts_nopendaftaran"].ToString(),
 						dts_filetugas = reader["dts_filetugas"].ToString(),
-						dts_waktupengumpulam = DateTime.Parse(reader["dts_waktupengumpulam"].ToString()),
+						dts_waktupengumpulan = DateTime.Parse(reader["dts_waktupengumpulan"].ToString()),
 						dts_nilaitugas = Double.Parse(reader["dts_nilaitugas"].ToString()),
 					};
 
@@ -424,7 +425,7 @@ namespace PKKMB_API.Repository
 			}
 		}
 
-		public ResponseModel UploadTugasMahasiswa(string dts_iddetail, string dts_nopendaftaram, IFormFile file, DateTime dts_waktupengumpulam, double dts_nilaitugas)
+		public ResponseModel UploadTugasMahasiswa(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas)
 		{
 			try
 			{
@@ -452,9 +453,9 @@ namespace PKKMB_API.Repository
 				SqlCommand command = new SqlCommand("sp_TambahTugasDetail", _connection);
 				command.CommandType = CommandType.StoredProcedure;
 				command.Parameters.AddWithValue("@p_idtugas", dts_iddetail);
-				command.Parameters.AddWithValue("@p_nopendaftaram", dts_nopendaftaram);
+				command.Parameters.AddWithValue("@p_nopendaftaran", dts_nopendaftaran);
 				command.Parameters.AddWithValue("@p_filetugas", uniqueFileName);
-				command.Parameters.AddWithValue("@p_waktupengumpulan", dts_waktupengumpulam);
+				command.Parameters.AddWithValue("@p_waktupengumpulan", dts_waktupengumpulan);
 				command.Parameters.AddWithValue("@p_nilaitugas", dts_nilaitugas);
 
 				_connection.Open();
@@ -475,7 +476,7 @@ namespace PKKMB_API.Repository
 			return _response;
 		}
 
-		public ResponseModel UbahTugasMahasiswa(string tgs_idtugas, string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
+		public ResponseModel UbahTugasMahasiswa(string tgs_idtugas, string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
 		{
 			try
 			{
@@ -523,7 +524,7 @@ namespace PKKMB_API.Repository
 				command.CommandType = CommandType.StoredProcedure;
 				command.Parameters.AddWithValue("@p_idtugas", tgs_idtugas);
 				command.Parameters.AddWithValue("@p_nim", tgs_nim);
-				command.Parameters.AddWithValue("@p_jenistugas", tgs_jenistugas);
+				command.Parameters.AddWithValue("@p_namatugas", tgs_namatugas);
 				command.Parameters.AddWithValue("@p_tglpemberiantugas", tgs_tglpemberiantugas);
 
 				// Pass the correct file name to the stored procedure

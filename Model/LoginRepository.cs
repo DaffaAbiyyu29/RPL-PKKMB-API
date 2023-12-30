@@ -228,7 +228,7 @@ namespace PKKMB_API.Model
 				{
 					new Claim("id", ksk.ksk_nim),
 					new Claim(JwtRegisteredClaimNames.Name, ksk.ksk_nama),
-					new Claim(ClaimTypes.Role, "Panitia Kesekretariatan"),
+					new Claim(ClaimTypes.Role, ksk.ksk_role),
 					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 					// Add more claims specific to PanitiaKesekretariatanModel if needed
 				};
