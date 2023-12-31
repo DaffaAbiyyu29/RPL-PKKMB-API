@@ -118,26 +118,17 @@ namespace PKKMB_API.Model
 		{
 			try
 			{
-				string query = "UPDATE pkm_trnilaisikap " +
-							"SET nls_nopendaftaran = @p2, " +
-							"nls_nim = @p3, " +
-							"nls_sikap = @p4, " +
-							"nls_jamplus = @p5, " +
-							"nls_jamminus = @p6, " +
-							"nls_tanggal = @p7, " +
-							"nls_deskripsi = @p8 " +
-							"nls_status = @p9 " +
-							"WHERE nls_idnilaisikap = @p1";
-				using SqlCommand command = new SqlCommand(query, _connection);
-				command.Parameters.AddWithValue("@p1", nilaiSikapModel.nls_idnilaisikap);
-				command.Parameters.AddWithValue("@p2", nilaiSikapModel.nls_nopendaftaran);
-				command.Parameters.AddWithValue("@p3", nilaiSikapModel.nls_nim);
-				command.Parameters.AddWithValue("@p4", nilaiSikapModel.nls_sikap);
-				command.Parameters.AddWithValue("@p5", nilaiSikapModel.nls_jamplus);
-				command.Parameters.AddWithValue("@p6", nilaiSikapModel.nls_jamminus);
-				command.Parameters.AddWithValue("@p7", nilaiSikapModel.nls_tanggal);
-				command.Parameters.AddWithValue("@p8", nilaiSikapModel.nls_deskripsi);
-				command.Parameters.AddWithValue("@p9", nilaiSikapModel.nls_status);
+				SqlCommand command = new SqlCommand("sp_UpdateNilaiSikap", _connection);
+				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@nls_idnilaisikap", nilaiSikapModel.nls_idnilaisikap);
+				command.Parameters.AddWithValue("@nls_nopendaftaran", nilaiSikapModel.nls_nopendaftaran);
+				command.Parameters.AddWithValue("@nls_nim", nilaiSikapModel.nls_nim);
+				command.Parameters.AddWithValue("@nls_sikap", nilaiSikapModel.nls_sikap);
+				command.Parameters.AddWithValue("@nls_tanggal", nilaiSikapModel.nls_tanggal);
+				command.Parameters.AddWithValue("@nls_jamplus", nilaiSikapModel.nls_jamplus);
+				command.Parameters.AddWithValue("@nls_jamminus", nilaiSikapModel.nls_jamminus);
+				command.Parameters.AddWithValue("@nls_deskripsi", nilaiSikapModel.nls_deskripsi);
+				command.Parameters.AddWithValue("@nls_status", nilaiSikapModel.nls_status);
 				_connection.Open();
 				command.ExecuteNonQuery();
 				_connection.Close();
