@@ -34,9 +34,6 @@ namespace PKKMB_API.Model
 						nls_nim = reader["nls_nim"].ToString(),
 						nls_sikap = reader["nls_sikap"].ToString(),
 						nls_tanggal = DateTime.Parse(reader["nls_tanggal"].ToString()),
-						nls_jamplus = Convert.ToInt32(reader["nls_jamplus"].ToString()),
-						nls_jamminus = Convert.ToInt32(reader["nls_jamminus"].ToString()),
-						nls_deskripsi = reader["nls_deskripsi"].ToString(),
 						nls_status = reader["nls_status"].ToString(),
 					};
 					nilaisikapList.Add(nilaiSikap);
@@ -66,10 +63,7 @@ namespace PKKMB_API.Model
 				nilaiSikapModel.nls_nopendaftaran = reader["nls_nopendaftaran"].ToString();
 				nilaiSikapModel.nls_nim = reader["nls_nim"].ToString();
 				nilaiSikapModel.nls_sikap = reader["nls_sikap"].ToString();
-				nilaiSikapModel.nls_jamplus = Convert.ToInt32(reader["nls_jamplus"].ToString());
-				nilaiSikapModel.nls_jamminus = Convert.ToInt32(reader["nls_jamminus"].ToString());
 				nilaiSikapModel.nls_tanggal = DateTime.Parse(reader["nls_tanggal"].ToString());
-				nilaiSikapModel.nls_deskripsi = reader["nls_deskripsi"].ToString();
 				nilaiSikapModel.nls_status = reader["nls_status"].ToString();
 				reader.Close();
 				_connection.Close();
@@ -80,7 +74,6 @@ namespace PKKMB_API.Model
 			}
 			return nilaiSikapModel;
 		}
-
 
 		public ResponseModel insertNilaiSikap([FromBody] NilaiSikapModel nilaiSikapModel)
 		{
@@ -93,9 +86,6 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_nls_nim", nilaiSikapModel.nls_nim);
 				command.Parameters.AddWithValue("@p_nls_sikap", nilaiSikapModel.nls_sikap);
 				command.Parameters.AddWithValue("@p_nls_tanggal", nilaiSikapModel.nls_tanggal);
-				command.Parameters.AddWithValue("@p_nls_jamplus", nilaiSikapModel.nls_jamplus);
-				command.Parameters.AddWithValue("@p_nls_jamminus", nilaiSikapModel.nls_jamminus);
-				command.Parameters.AddWithValue("@p_nls_deskripsi", nilaiSikapModel.nls_deskripsi);
 				command.Parameters.AddWithValue("@p_nls_status", nilaiSikapModel.nls_status);
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -114,6 +104,7 @@ namespace PKKMB_API.Model
 
 			return responseModel;
 		}
+
 		public ResponseModel updateNilaiSikap(NilaiSikapModel nilaiSikapModel)
 		{
 			try
@@ -125,9 +116,6 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@nls_nim", nilaiSikapModel.nls_nim);
 				command.Parameters.AddWithValue("@nls_sikap", nilaiSikapModel.nls_sikap);
 				command.Parameters.AddWithValue("@nls_tanggal", nilaiSikapModel.nls_tanggal);
-				command.Parameters.AddWithValue("@nls_jamplus", nilaiSikapModel.nls_jamplus);
-				command.Parameters.AddWithValue("@nls_jamminus", nilaiSikapModel.nls_jamminus);
-				command.Parameters.AddWithValue("@nls_deskripsi", nilaiSikapModel.nls_deskripsi);
 				command.Parameters.AddWithValue("@nls_status", nilaiSikapModel.nls_status);
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -145,6 +133,134 @@ namespace PKKMB_API.Model
 			responseModel.data = null;
 
 			return responseModel;
+		}
+
+		public ResponseModel insertJam([FromBody] DetailJamModel jam)
+		{
+			try
+			{
+				SqlCommand command = new SqlCommand("sp_TambahJamPlusMinus", _connection);
+				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_nopendaftaran", jam.dtj_nopendaftaran);
+				command.Parameters.AddWithValue("@p_nim", jam.dtj_nim);
+				command.Parameters.AddWithValue("@p_jenisjam", jam.dtj_jenisjam);
+				command.Parameters.AddWithValue("@p_jumlah", jam.dtj_jumlah);
+				command.Parameters.AddWithValue("@p_deskripsi", jam.dtj_deskripsi);
+				command.Parameters.AddWithValue("@p_tanggal", jam.dtj_tanggal);
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				responseModel.status = 500;
+				responseModel.messages = "Failed, " + ex.Message;
+				return responseModel;
+			}
+			responseModel.status = 200;
+			responseModel.messages = "Success";
+			responseModel.data = null;
+
+			return responseModel;
+		}
+
+		public ResponseModel ubahJam([FromBody] DetailJamModel jam)
+		{
+			try
+			{
+				SqlCommand command = new SqlCommand("sp_UpdateJamPlusMinus", _connection);
+				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_idjam", jam.dtj_idjam);
+				command.Parameters.AddWithValue("@p_nopendaftaran", jam.dtj_nopendaftaran);
+				command.Parameters.AddWithValue("@p_nim", jam.dtj_nim);
+				command.Parameters.AddWithValue("@p_jenisjam", jam.dtj_jenisjam);
+				command.Parameters.AddWithValue("@p_jumlah", jam.dtj_jumlah);
+				command.Parameters.AddWithValue("@p_deskripsi", jam.dtj_deskripsi);
+				command.Parameters.AddWithValue("@p_tanggal", jam.dtj_tanggal);
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				responseModel.status = 500;
+				responseModel.messages = "Failed, " + ex.Message;
+				return responseModel;
+			}
+			responseModel.status = 200;
+			responseModel.messages = "Success";
+			responseModel.data = null;
+
+			return responseModel;
+		}
+
+		public List<DetailJamModel> getDetailJamMahasiswa(string dtj_nopendaftaran)
+		{
+			List<DetailJamModel> dtjList = new List<DetailJamModel>();
+			try
+			{
+				string query = "SELECT * FROM pkm_trdetailjamplusminus WHERE dtj_nopendaftaran = @p1";
+				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", dtj_nopendaftaran);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+				while (reader.Read())
+				{
+					DetailJamModel dtj = new DetailJamModel
+					{
+						dtj_idjam = reader["dtj_idjam"].ToString(),
+						dtj_nopendaftaran = reader["dtj_nopendaftaran"].ToString(),
+						dtj_nim = reader["dtj_nim"].ToString(),
+						dtj_jenisjam = reader["dtj_jenisjam"].ToString(),
+						dtj_jumlah = int.Parse(reader["dtj_jumlah"].ToString()),
+						dtj_tanggal = DateTime.Parse(reader["dtj_tanggal"].ToString()),
+						dtj_deskripsi = reader["dtj_deskripsi"].ToString(),
+						dtj_status = reader["dts_status"].ToString(),
+					};
+					dtjList.Add(dtj);
+				}
+				reader.Close();
+				_connection.Close();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+			return dtjList;
+		}
+
+		public DetailJamModel getDataDetailJamMahasiswa(string dtj_idjam, string dtj_nopendaftaran)
+		{
+			DetailJamModel dtj = new DetailJamModel();
+			try
+			{
+				string query = "SELECT * FROM pkm_trdetailjamplusminus WHERE dtj_idjam = @p1 AND dtj_nopendaftaran = @p2";
+				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", dtj_idjam);
+				command.Parameters.AddWithValue("@p2", dtj_nopendaftaran);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+				reader.Read();
+
+				dtj.dtj_idjam = reader["dtj_idjam"].ToString();
+				dtj.dtj_nopendaftaran = reader["dtj_nopendaftaran"].ToString();
+				dtj.dtj_nim = reader["dtj_nim"].ToString();
+				dtj.dtj_jenisjam = reader["dtj_jenisjam"].ToString();
+				dtj.dtj_jumlah = int.Parse(reader["dtj_jumlah"].ToString());
+				dtj.dtj_tanggal = DateTime.Parse(reader["dtj_tanggal"].ToString());
+				dtj.dtj_deskripsi = reader["dtj_deskripsi"].ToString();
+				dtj.dtj_status = reader["dts_status"].ToString();
+
+				reader.Close();
+				_connection.Close();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+			return dtj;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PKKMB_API.Model;
+using PKKMB_API.Repository;
 
 namespace PKKMB_API.Controllers
 {
@@ -71,6 +72,54 @@ namespace PKKMB_API.Controllers
 		{
 			var result = nilaiSikapRepository.updateNilaiSikap(nilaiSikapModel);
 			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+		}
+
+		[HttpPost("/insertJamPlusMinus", Name = "insertJamPlusMinus")]
+		public IActionResult insertJamPlusMinus([FromBody] DetailJamModel jam)
+		{
+			var result = nilaiSikapRepository.insertJam(jam);
+			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+		}
+
+		[HttpPut("/ubahJamPlusMinus", Name = "ubahJamPlusMinus")]
+		public IActionResult ubahJamPlusMinus([FromBody] DetailJamModel jam)
+		{
+			var result = nilaiSikapRepository.ubahJam(jam);
+			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+		}
+
+		[HttpGet("/GetDetailJamMahasiswa", Name = "GetDetailJamMahasiswa")]
+		public IActionResult GetDetailJamMahasiswa(string dtj_nopendaftaran)
+		{
+			try
+			{
+				response.status = 200;
+				response.messages = "Success";
+				response.data = nilaiSikapRepository.getDetailJamMahasiswa(dtj_nopendaftaran);
+			}
+			catch (Exception ex)
+			{
+				response.status = 500;
+				response.messages = "Failed, " + ex;
+			}
+			return Ok(response);
+		}
+
+		[HttpGet("/GetDataDetailJamMahasiswa", Name = "GetDataDetailJamMahasiswa")]
+		public IActionResult GetDataDetailJamMahasiswa(string dtj_idjam, string dtj_nopendaftaran)
+		{
+			try
+			{
+				response.status = 200;
+				response.messages = "Success";
+				response.data = nilaiSikapRepository.getDataDetailJamMahasiswa(dtj_idjam, dtj_nopendaftaran);
+			}
+			catch (Exception ex)
+			{
+				response.status = 500;
+				response.messages = "Failed, " + ex;
+			}
+			return Ok(response);
 		}
 	}
 }

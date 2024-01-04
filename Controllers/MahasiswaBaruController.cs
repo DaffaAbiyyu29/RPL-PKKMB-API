@@ -129,5 +129,19 @@ namespace PKKMB_API.Controllers
 			var result = _mhsBaruRepo.batalPengelompokkanMahasiswa(mhs_nopendaftaran);
 			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
 		}
+
+		[HttpGet("/GetMahasiswaByKelompok", Name = "GetMahasiswaByKelompok")]
+		public IActionResult GetMahasiswaByKelompok(string kmk_idkelompok)
+		{
+			try
+			{
+				List<Dictionary<string, object>> detailList = _mhsBaruRepo.GetMahasiswaByKelompok(kmk_idkelompok);
+				return Ok(detailList);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Error: {ex.Message}");
+			}
+		}
 	}
 }

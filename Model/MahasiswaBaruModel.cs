@@ -1,4 +1,6 @@
-﻿namespace PKKMB_API.Model
+﻿using System.Numerics;
+
+namespace PKKMB_API.Model
 {
 	public class MahasiswaBaruModel
 	{
@@ -18,6 +20,8 @@
 		public string mhs_saran { get; set; }
 		public string mhs_kritik { get; set; }
 		public string mhs_insight { get; set; }
+		public int mhs_jamplus { get; set; }
+		public int mhs_jamminus { get; set; }
 		public DateTime mhs_tglkirimevaluasi { get; set; }
 	}
 }

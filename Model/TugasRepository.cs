@@ -604,18 +604,18 @@ namespace PKKMB_API.Repository
 				while (reader.Read())
 				{
 					Dictionary<string, object> detail = new Dictionary<string, object>
-			{
-				{ "dts_iddetail", reader["dts_iddetail"].ToString() },
-				{ "dts_nopendaftaran", reader["dts_nopendaftaran"].ToString() },
-				{ "mhs_namalengkap", reader["mhs_namalengkap"].ToString() },
-				{ "mhs_gender", reader["mhs_gender"].ToString() },
-				{ "mhs_programstudi", reader["mhs_programstudi"].ToString() },
-				{ "mhs_kategori", reader["mhs_kategori"].ToString() },
-				{ "mhs_idkelompok", reader["mhs_idkelompok"].ToString() },
-				{ "dts_filetugas", reader["dts_filetugas"].ToString() },
-				{ "dts_waktupengumpulan", DateTime.Parse(reader["dts_waktupengumpulan"].ToString()) },
-				{ "dts_nilaitugas", Double.Parse(reader["dts_nilaitugas"].ToString()) },
-			};
+					{
+						{ "dts_iddetail", reader["dts_iddetail"].ToString() },
+						{ "dts_nopendaftaran", reader["dts_nopendaftaran"].ToString() },
+						{ "mhs_namalengkap", reader["mhs_namalengkap"].ToString() },
+						{ "mhs_gender", reader["mhs_gender"].ToString() },
+						{ "mhs_programstudi", reader["mhs_programstudi"].ToString() },
+						{ "mhs_kategori", reader["mhs_kategori"].ToString() },
+						{ "mhs_idkelompok", reader["mhs_idkelompok"].ToString() },
+						{ "dts_filetugas", reader["dts_filetugas"].ToString() },
+						{ "dts_waktupengumpulan", DateTime.Parse(reader["dts_waktupengumpulan"].ToString()) },
+						{ "dts_nilaitugas", Double.Parse(reader["dts_nilaitugas"].ToString()) },
+					};
 					detailList.Add(detail);
 				}
 

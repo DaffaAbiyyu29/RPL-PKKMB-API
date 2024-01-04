@@ -57,7 +57,9 @@ namespace PKKMB_API.Model
 						mhs_insight = reader["mhs_insight"].ToString(),
 						mhs_tglkirimevaluasi = DateTime.TryParse(reader["mhs_tglkirimevaluasi"].ToString(), out DateTime tglkirimevaluasi)
 								? tglkirimevaluasi
-								: DateTime.MinValue
+								: DateTime.MinValue,
+						mhs_jamplus = int.Parse(reader["mhs_jamplus"].ToString()),
+						mhs_jamminus = int.Parse(reader["mhs_jamminus"].ToString()),
 					};
 					mhsList.Add(mhsBaru);
 				}
@@ -105,7 +107,9 @@ namespace PKKMB_API.Model
 						mhs_insight = reader["mhs_insight"].ToString(),
 						mhs_tglkirimevaluasi = DateTime.TryParse(reader["mhs_tglkirimevaluasi"].ToString(), out DateTime tglkirimevaluasi)
 								? tglkirimevaluasi
-								: DateTime.MinValue
+								: DateTime.MinValue,
+						mhs_jamplus = int.Parse(reader["mhs_jamplus"].ToString()),
+						mhs_jamminus = int.Parse(reader["mhs_jamminus"].ToString()),
 					};
 
 					reader.Close();
@@ -446,6 +450,47 @@ namespace PKKMB_API.Model
 			}
 
 			return response;
+		}
+
+		public List<Dictionary<string, object>> GetMahasiswaByKelompok(string kelompokId)
+		{
+			List<Dictionary<string, object>> detailList = new List<Dictionary<string, object>>();
+			try
+			{
+				string query = "SELECT * FROM pkm_msmahasiswa WHERE mhs_status = 'Aktif' AND mhs_idkelompok = @KelompokId";
+
+				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@KelompokId", kelompokId);
+
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+
+				while (reader.Read())
+				{
+					Dictionary<string, object> detail = new Dictionary<string, object>
+					{
+						{ "mhs_nopendaftaran", reader["mhs_nopendaftaran"].ToString() },
+						{ "mhs_namalengkap", reader["mhs_namalengkap"].ToString() },
+						{ "mhs_gender", reader["mhs_gender"].ToString() },
+						{ "mhs_programstudi", reader["mhs_programstudi"].ToString() },
+						{ "mhs_kategori", reader["mhs_kategori"].ToString() },
+						{ "mhs_idkelompok", reader["mhs_idkelompok"].ToString() },
+					};
+					detailList.Add(detail);
+				}
+
+				reader.Close();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+			finally
+			{
+				_connection.Close();
+			}
+
+			return detailList;
 		}
 	}
 }
