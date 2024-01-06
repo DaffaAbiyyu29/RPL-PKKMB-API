@@ -588,15 +588,16 @@ namespace PKKMB_API.Repository
 			return _response;
 		}
 
-		public List<Dictionary<string, object>> GetDetailTugasByKelompok(string kelompokId)
+		public List<Dictionary<string, object>> GetDetailTugasByKelompok(string idtugas, string idkelompok)
 		{
 			List<Dictionary<string, object>> detailList = new List<Dictionary<string, object>>();
 			try
 			{
-				string query = "SELECT * FROM view_DetailTugasMahasiswa WHERE mhs_idkelompok = @KelompokId";
+				string query = "SELECT * FROM view_DetailTugasMahasiswa WHERE dts_iddetail = @idtugas AND mhs_idkelompok = @idkelompok";
 
 				SqlCommand command = new SqlCommand(query, _connection);
-				command.Parameters.AddWithValue("@KelompokId", kelompokId);
+				command.Parameters.AddWithValue("@idtugas", idtugas);
+				command.Parameters.AddWithValue("@idkelompok", idkelompok);
 
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();

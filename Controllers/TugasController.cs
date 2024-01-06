@@ -295,11 +295,11 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("GetDetailTugasByKelompok")]
-		public IActionResult GetDetailTugasByKelompok(string kmk_idkelompok)
+		public IActionResult GetDetailTugasByKelompok(string id_tugas, string id_kelompok)
 		{
 			try
 			{
-				List<Dictionary<string, object>> detailList = tugasRepository.GetDetailTugasByKelompok(kmk_idkelompok);
+				List<Dictionary<string, object>> detailList = tugasRepository.GetDetailTugasByKelompok(id_tugas, id_kelompok);
 				return Ok(detailList);
 			}
 			catch (Exception ex)
