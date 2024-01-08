@@ -99,7 +99,6 @@ namespace PKKMB_API.Model
 				SqlCommand command = new SqlCommand(storedProcedureName, _connection);
 				command.CommandType = CommandType.StoredProcedure;
 
-				command.Parameters.AddWithValue("@inf_idinformasi", informasiModel.inf_idinformasi);
 				command.Parameters.AddWithValue("@inf_jenisinformasi", informasiModel.inf_jenisinformasi);
 				command.Parameters.AddWithValue("@inf_namainformasi", informasiModel.inf_namainformasi);
 				command.Parameters.AddWithValue("@inf_tglpublikasi", informasiModel.inf_tglpublikasi);
