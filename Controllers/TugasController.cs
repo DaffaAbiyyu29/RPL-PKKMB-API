@@ -155,9 +155,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpPut("Ubah")]
-		public IActionResult UbahFile(string tgs_idtugas, string tgs_nim, string tgs_jenistugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
+		public IActionResult UbahFile(string tgs_idtugas, string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
 		{
-			var result = tugasRepository.UbahFile(tgs_idtugas, tgs_nim, tgs_jenistugas, tgs_tglpemberiantugas, file, tgs_deadline, tgs_deskripsi, tgs_status);
+			var result = tugasRepository.UbahFile(tgs_idtugas, tgs_nim, tgs_namatugas, tgs_tglpemberiantugas, file, tgs_deadline, tgs_deskripsi, tgs_status);
 			if (result.status == 200)
 			{
 				return Ok(result);
