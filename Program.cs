@@ -9,21 +9,15 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+/*builder.Services.Configure<EmailSettingModel>(builder.Configuration.GetSection("MailSettings"));
+var emailSettings = builder.Configuration.GetSection("MailSettings").Get<EmailSettingModel>();
+Console.WriteLine($"Email settings: {emailSettings.Email}, {emailSettings.Host}, {emailSettings.Port}");
+builder.Services.AddTransient<IMailService, ResetPasswordRepository>();*/
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(/*options =>
-{
-	options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-	{
-		In = ParameterLocation.Header,
-		Name = "Authorization",
-		Type = SecuritySchemeType.ApiKey
-	});
-
-	options.OperationFilter<SecurityRequirementsOperationFilter>();
-}*/);
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
@@ -32,21 +26,9 @@ builder.Services.AddCors(options =>
 		builder.WithOrigins("https://localhost:7240")
 			   .AllowAnyHeader()
 			   .AllowAnyMethod()
-			   .AllowCredentials(); // Allow credentials (cookies)
+			   .AllowCredentials();
 	});
 });
-
-/*builder.Services.AddAuthentication().AddJwtBearer(options =>
-{
-	options.TokenValidationParameters = new TokenValidationParameters
-	{
-		ValidateIssuerSigningKey = true,
-		ValidateAudience = false,
-		ValidateIssuer = false,
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-				builder.Configuration.GetSection("AppSettings:Token").Value!))
-	};
-});*/
 
 builder.Services.AddAuthentication("Bearer")
 	.AddJwtBearer("Bearer", options =>
