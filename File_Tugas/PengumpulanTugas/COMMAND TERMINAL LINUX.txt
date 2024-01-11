@@ -1,0 +1,31 @@
+COMMAND TERMINAL LINUX
+
+ls (List File) = melihat isi dari sebuah direktori
+pwd (Print Working Directory) = melihat direktori yang sedang digunakan
+cd (Change Directory) = untuk menuju direktori lain yang ingin digunakan "cd /(nama direktori)/"
+mkdir (Make Directory) = membuat direktori / folder baru "mkdir (nama direktori baru)"
+mv (Move) = memindahkan file / direktori. bisa juga digunakan untuk me rename file / folder "mv /(direktori yang ingin dipindahkan)/ /(direktori tujuan)/" "mv (nama file/folder lama) (nama file/folder baru)"
+cp (Copy) = untuk mengcopy file / direktori "cp -r /(nama file/folder yang ingin dicopy)/ /(nama direktori tujuan)/"
+rmdir (Remove Directory) = untuk menghapus file / direktori "rmdir (nama file/folder yang ingin dihapus)"
+
+touch = membuat atau memodifikasi file "touch (nama file yang ingin dibuat)"
+nano = membuat atau memodifikasi isi dari suatu file "nano (nama file)"
+cat = menampilkan isi dari suatu file "cat (nama file)"
+grep = untuk mencari karakter atau kata "grep (kata yang ingin dicari) (nama file asal)"
+wc = menampilkan jumlah baris, jumlah kata, dan ukuran(kb) dari file tersebut	
+sort = mengurutkan isi dari suatu file berdasarkan huruf abjad
+
+who = untuk mengetahui user yang sedang login dan waktunya
+whoami = untuk mengetahui user yang sedang login
+uname = untuk melihat spesifikasi komputer "uname -(opsi)" 
+date = untuk menampilkan tanggal dan waktu sistem
+cal = untuk menampilkan kalender
+df = menampilkan pengguna space file system dari harddisk
+uptime = menunjukkan berapa lama komputer kita menyala
+hostname = menampilkan nama dari komputer kita
+free = untuk melihat kapasitas peenggunaan memori
+
+penggabungan isi text = cat (file asal) >> (file tujuan)
+
+pipe / pipeline ( | ) = komunikasi antar proses
+

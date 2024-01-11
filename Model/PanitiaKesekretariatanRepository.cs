@@ -285,7 +285,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_notelepon", ksk.ksk_notelepon);
 				command.Parameters.AddWithValue("@p_email", ksk.ksk_email);
 				command.Parameters.AddWithValue("@p_alamat", ksk.ksk_alamat);
-				command.Parameters.AddWithValue("@p_status", "Menunggu Verifikasi");
+				command.Parameters.AddWithValue("@p_status", "Tidak Aktif");
 
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -381,25 +381,34 @@ namespace PKKMB_API.Model
 			return response;
 		}
 
-		public ResponseModel deleteKsk([FromBody] string ksk_nim)
+		public ResponseModel nonAktifKsk([FromBody] List<string> ksk_nim)
 		{
 			try
 			{
-				string query = "delete from pkm_mskesekretariatan where ksk_nim= @p1";
-				using SqlCommand command = new SqlCommand(query, _connection);
-				command.Parameters.AddWithValue("@p1", ksk_nim);
+				DataTable nimTable = new DataTable();
+				nimTable.Columns.Add("Item", typeof(string));
+
+				foreach (string nim in ksk_nim)
+				{
+					nimTable.Rows.Add(nim);
+				}
+
+				SqlCommand command = new SqlCommand("sp_NonAktifKesekretariatan", _connection);
+				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_nim", nimTable);
+
 				_connection.Open();
 				command.ExecuteNonQuery();
 				_connection.Close();
 
 				response.status = 200;
-				response.messages = "Panitia Kesekretariatan berhasil dihapus";
+				response.messages = "Panitia Kesekretariatan Aktif";
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.Message);
 				response.status = 500;
-				response.messages = "Terjadi kesalahan saat menghapus Panitia Kesekretariatan = " + ex.Message;
+				response.messages = "Terjadi kesalahan saat mengaktifkan Panitia Kesekretariatan = " + ex.Message;
 			}
 
 			return response;

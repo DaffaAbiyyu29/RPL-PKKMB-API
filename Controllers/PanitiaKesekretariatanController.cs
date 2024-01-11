@@ -149,10 +149,10 @@ namespace PKKMB_API.Controllers
 			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
 		}
 
-		[HttpDelete("/hapusksk", Name = "HapusKsk")]
-		public IActionResult HapusKsk(string ksk_nim)
+		[HttpPut("/nonAktifKsk", Name = "nonAktifKsk")]
+		public IActionResult nonAktifKsk([FromBody] List<string> ksk_nim)
 		{
-			var result = _kskRepo.deleteKsk(ksk_nim);
+			var result = _kskRepo.nonAktifKsk(ksk_nim);
 			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
 		}
 	}

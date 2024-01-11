@@ -492,5 +492,71 @@ namespace PKKMB_API.Model
 
 			return detailList;
 		}
+
+		public ResponseModel verifikasiKelulusan([FromBody] List<string> mhs_nopendaftaran)
+		{
+			try
+			{
+				DataTable nimTable = new DataTable();
+				nimTable.Columns.Add("Item", typeof(string));
+
+				foreach (string nim in mhs_nopendaftaran)
+				{
+					nimTable.Rows.Add(nim);
+				}
+
+				SqlCommand command = new SqlCommand("sp_VerifikasiKelulusanMhs", _connection);
+				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_nopendaftaran", nimTable);
+
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+
+				response.status = 200;
+				response.messages = "Berhasil Meluluskan Mahasiswa Baru";
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				response.status = 500;
+				response.messages = "Terjadi kesalahan saat Meluluskan Mahasiswa Baru = " + ex.Message;
+			}
+
+			return response;
+		}
+
+		public ResponseModel batalKelulusan([FromBody] List<string> mhs_nopendaftaran)
+		{
+			try
+			{
+				DataTable nimTable = new DataTable();
+				nimTable.Columns.Add("Item", typeof(string));
+
+				foreach (string nim in mhs_nopendaftaran)
+				{
+					nimTable.Rows.Add(nim);
+				}
+
+				SqlCommand command = new SqlCommand("sp_batalKelulusanMhs", _connection);
+				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_nopendaftaran", nimTable);
+
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+
+				response.status = 200;
+				response.messages = "Berhasil Membatalkan Keluluskan Mahasiswa Baru";
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				response.status = 500;
+				response.messages = "Terjadi kesalahan saat Membatalkan Keluluskan Mahasiswa Baru = " + ex.Message;
+			}
+
+			return response;
+		}
 	}
 }

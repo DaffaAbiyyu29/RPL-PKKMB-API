@@ -143,5 +143,19 @@ namespace PKKMB_API.Controllers
 				return StatusCode(500, $"Error: {ex.Message}");
 			}
 		}
+
+		[HttpPut("/verifikasiKelulusanMahasiswa", Name = "verifikasiKelulusanMahasiswa")]
+		public IActionResult verifikasiKelulusanMahasiswa([FromBody] List<string> mhs_nopendaftaran)
+		{
+			var result = _mhsBaruRepo.verifikasiKelulusan(mhs_nopendaftaran);
+			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+		}
+
+		[HttpPut("/batalKelulusanMahasiswa", Name = "batalKelulusanMahasiswa")]
+		public IActionResult batalKelulusanMahasiswa([FromBody] List<string> mhs_nopendaftaran)
+		{
+			var result = _mhsBaruRepo.batalKelulusan(mhs_nopendaftaran);
+			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+		}
 	}
 }
