@@ -81,5 +81,22 @@ namespace PKKMB_API.Controllers
 			}
 			return Ok(response);
 		}
+
+		[HttpGet("/GetAbsensiByTanggal", Name = "GetAbsensiByTanggal")]
+		public IActionResult GetAbsensiByTanggal(string abs_tglkehadiran)
+		{
+			try
+			{
+				response.status = 200;
+				response.messages = "Berhasil";
+				response.data = _absenRepo.getAbsensiByTanggal(abs_tglkehadiran);
+			}
+			catch (Exception ex)
+			{
+				response.status = 500;
+				response.messages = "Gagal, " + ex.Message;
+			}
+			return Ok(response);
+		}
 	}
 }

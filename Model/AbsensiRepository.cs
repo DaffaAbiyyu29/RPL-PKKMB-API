@@ -195,5 +195,40 @@ namespace PKKMB_API.Model
 
 			return response;
 		}
+
+		public List<AbsensiModel> getAbsensiByTanggal(string abs_tglkehadiran)
+		{
+			List<AbsensiModel> absenList = new List<AbsensiModel>();
+			try
+			{
+				string query = "SELECT * FROM [dbo].[GetAbsensiByTanggal](@p_tanggal)";
+				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p_tanggal", abs_tglkehadiran);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+				while (reader.Read())
+				{
+					AbsensiModel absensi = new AbsensiModel
+					{
+						abs_idabsensi = reader["abs_idabsensi"].ToString(),
+						abs_nim = reader["abs_nim"].ToString(),
+						abs_nopendaftaran = reader["abs_nopendaftaran"].ToString(),
+						abs_tglkehadiran = DateTime.Parse(reader["abs_tglkehadiran"].ToString()),
+						abs_statuskehadiran = reader["abs_Statuskehadiran"].ToString(),
+						abs_keterangan = reader["abs_keterangan"].ToString(),
+						abs_status = reader["abs_status"].ToString(),
+					};
+					absenList.Add(absensi);
+				}
+				reader.Close();
+				_connection.Close();
+				return absenList;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Error : " + ex.Message);
+				return null;
+			}
+		}
 	}
 }
