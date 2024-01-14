@@ -66,6 +66,7 @@ namespace PKKMB_API.Controllers
 			absensi1.abs_tglkehadiran = absensi.abs_tglkehadiran;
 			absensi1.abs_statuskehadiran = absensi.abs_statuskehadiran;
 			absensi1.abs_keterangan = absensi.abs_keterangan;
+			absensi1.abs_idpkkmb = absensi.abs_idpkkmb;
 			absensi1.abs_status = absensi.abs_status;
 
 			try

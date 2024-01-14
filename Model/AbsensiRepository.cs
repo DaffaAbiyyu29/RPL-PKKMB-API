@@ -36,6 +36,7 @@ namespace PKKMB_API.Model
 						abs_tglkehadiran = DateTime.Parse(reader["abs_tglkehadiran"].ToString()),
 						abs_statuskehadiran = reader["abs_Statuskehadiran"].ToString(),
 						abs_keterangan = reader["abs_keterangan"].ToString(),
+						abs_idpkkmb = reader["abs_idpkkmb"].ToString(),
 						abs_status = reader["abs_status"].ToString(),
 					};
 					absenList.Add(absensi);
@@ -72,6 +73,7 @@ namespace PKKMB_API.Model
 						abs_tglkehadiran = DateTime.Parse(reader["abs_tglkehadiran"].ToString()),
 						abs_statuskehadiran = reader["abs_Statuskehadiran"].ToString(),
 						abs_keterangan = reader["abs_keterangan"].ToString(),
+                        abs_idpkkmb = reader["abs_idpkkmb"].ToString(),
 						abs_status = reader["abs_status"].ToString(),
 					};
 
@@ -109,6 +111,7 @@ namespace PKKMB_API.Model
 					command.Parameters.AddWithValue("@p_tglkehadiran", absensiItem.abs_tglkehadiran);
 					command.Parameters.AddWithValue("@p_statuskehadiran", absensiItem.abs_statuskehadiran);
 					command.Parameters.AddWithValue("@p_keterangan", absensiItem.abs_keterangan);
+					command.Parameters.AddWithValue("@p_idpkkmb", absensiItem.abs_idpkkmb);
 					command.Parameters.AddWithValue("@p_status", absensiItem.abs_status);
 
 					command.ExecuteNonQuery();

@@ -10,6 +10,7 @@ namespace PKKMB_API.Model
 		public DateTime abs_tglkehadiran { get; set; }
 		public string abs_statuskehadiran { get; set; }
 		public string abs_keterangan { get; set; }
+		public string abs_idpkkmb { get; set; }
 		public string abs_status { get; set; }
     }
 }
