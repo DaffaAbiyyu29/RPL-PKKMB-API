@@ -33,6 +33,7 @@ namespace PKKMB_API.Model
 						kmk_namakelompok = reader["kmk_namakelompok"].ToString(),
 						kmk_nim = reader["kmk_nim"].ToString(),
 						kmk_idruangan = reader["kmk_idruangan"].ToString(),
+						kmk_idpkkmb = reader["kmk_idpkkmb"].ToString(),
 						kmk_status = reader["kmk_status"].ToString(),
 					};
 					kelList.Add(kel);
@@ -67,6 +68,7 @@ namespace PKKMB_API.Model
 						kmk_namakelompok = reader["kmk_namakelompok"].ToString(),
 						kmk_nim = reader["kmk_nim"].ToString(),
 						kmk_idruangan = reader["kmk_idruangan"].ToString(),
+						kmk_idpkkmb = reader["kmk_idpkkmb"].ToString(),
 						kmk_status = reader["kmk_status"].ToString(),
 					};
 
@@ -108,6 +110,7 @@ namespace PKKMB_API.Model
 						kmk_namakelompok = reader["kmk_namakelompok"].ToString(),
 						kmk_nim = reader["kmk_nim"].ToString(),
 						kmk_idruangan = reader["kmk_idruangan"].ToString(),
+						kmk_idpkkmb = reader["kmk_idpkkmb"].ToString(),
 						kmk_status = reader["kmk_status"].ToString(),
 					};
 
@@ -139,6 +142,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@kmk_namakelompok", kel.kmk_namakelompok);
 				command.Parameters.AddWithValue("@kmk_nim", kel.kmk_nim);
 				command.Parameters.AddWithValue("@kmk_idruangan", kel.kmk_idruangan);
+				command.Parameters.AddWithValue("@kmk_idpkkmb", kel.kmk_idpkkmb);
 				command.Parameters.AddWithValue("@kmk_status", "Aktif");
 
 				_connection.Open();
@@ -171,6 +175,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@kmk_namakelompok", kel.kmk_namakelompok);
 				command.Parameters.AddWithValue("@kmk_nim", kel.kmk_nim);
 				command.Parameters.AddWithValue("@kmk_idruangan", kel.kmk_idruangan);
+				command.Parameters.AddWithValue("@kmk_idpkkmb", kel.kmk_idpkkmb);
 				command.Parameters.AddWithValue("@kmk_status", kel.kmk_status);
 
 				_connection.Open();

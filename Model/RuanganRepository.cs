@@ -31,6 +31,7 @@ namespace PKKMB_API.Model
 					{
 						rng_idruangan = reader["rng_idruangan"].ToString(),
 						rng_namaruangan = reader["rng_namaruangan"].ToString(),
+						rng_idpkkmb = reader["rng_idpkkmb"].ToString(),
 						rng_status = reader["rng_status"].ToString(),
 					};
 					ruanganList.Add(ruangan);
@@ -58,6 +59,7 @@ namespace PKKMB_API.Model
 				reader.Read();
 				ruanganModel.rng_idruangan = reader["rng_idruangan"].ToString();
 				ruanganModel.rng_namaruangan = reader["rng_namaruangan"].ToString();
+				ruanganModel.rng_idpkkmb = reader["rng_idpkkmb"].ToString();
 				ruanganModel.rng_status = reader["rng_status"].ToString();
 				reader.Close();
 				_connection.Close();
@@ -76,6 +78,7 @@ namespace PKKMB_API.Model
 				using SqlCommand command = new SqlCommand("sp_InsertRuangan", _connection);
 				command.CommandType = CommandType.StoredProcedure;
 				command.Parameters.AddWithValue("@rng_namaruangan", ruanganModel.rng_namaruangan);
+				command.Parameters.AddWithValue("@rng_idpkkmb", ruanganModel.rng_idpkkmb);
 				command.Parameters.AddWithValue("@rng_status", ruanganModel.rng_status);
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -103,6 +106,7 @@ namespace PKKMB_API.Model
 				command.CommandType = CommandType.StoredProcedure;
 				command.Parameters.AddWithValue("@rng_idruangan", ruanganModel.rng_idruangan);
 				command.Parameters.AddWithValue("@rng_namaruangan", ruanganModel.rng_namaruangan);
+				command.Parameters.AddWithValue("@rng_idpkkmb", ruanganModel.rng_idpkkmb);
 				command.Parameters.AddWithValue("@rng_status", ruanganModel.rng_status);
 				_connection.Open();
 				command.ExecuteNonQuery();

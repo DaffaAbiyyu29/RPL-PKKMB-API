@@ -9,6 +9,7 @@
 		public float dtj_jumlah { get; set; }
 		public string dtj_deskripsi { get; set; }
 		public DateTime dtj_tanggal { get; set; }
+		public string dtj_idpkkmb { get; set; }
 		public string dtj_status { get; set; }
 	}
 }

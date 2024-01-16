@@ -34,6 +34,7 @@ namespace PKKMB_API.Model
 						nls_nim = reader["nls_nim"].ToString(),
 						nls_sikap = reader["nls_sikap"].ToString(),
 						nls_tanggal = DateTime.Parse(reader["nls_tanggal"].ToString()),
+						nls_idpkkmb = reader["nls_idpkkmb"].ToString(),
 						nls_status = reader["nls_status"].ToString(),
 					};
 					nilaisikapList.Add(nilaiSikap);
@@ -64,6 +65,7 @@ namespace PKKMB_API.Model
 				nilaiSikapModel.nls_nim = reader["nls_nim"].ToString();
 				nilaiSikapModel.nls_sikap = reader["nls_sikap"].ToString();
 				nilaiSikapModel.nls_tanggal = DateTime.Parse(reader["nls_tanggal"].ToString());
+				nilaiSikapModel.nls_idpkkmb = reader["nls_idpkkmb"].ToString();
 				nilaiSikapModel.nls_status = reader["nls_status"].ToString();
 				reader.Close();
 				_connection.Close();
@@ -86,6 +88,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_nls_nim", nilaiSikapModel.nls_nim);
 				command.Parameters.AddWithValue("@p_nls_sikap", nilaiSikapModel.nls_sikap);
 				command.Parameters.AddWithValue("@p_nls_tanggal", nilaiSikapModel.nls_tanggal);
+				command.Parameters.AddWithValue("@p_nls_idpkkmb", nilaiSikapModel.nls_idpkkmb);
 				command.Parameters.AddWithValue("@p_nls_status", nilaiSikapModel.nls_status);
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -116,6 +119,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@nls_nim", nilaiSikapModel.nls_nim);
 				command.Parameters.AddWithValue("@nls_sikap", nilaiSikapModel.nls_sikap);
 				command.Parameters.AddWithValue("@nls_tanggal", nilaiSikapModel.nls_tanggal);
+				command.Parameters.AddWithValue("@p_nls_idpkkmb", nilaiSikapModel.nls_idpkkmb);
 				command.Parameters.AddWithValue("@nls_status", nilaiSikapModel.nls_status);
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -147,6 +151,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_jumlah", jam.dtj_jumlah);
 				command.Parameters.AddWithValue("@p_deskripsi", jam.dtj_deskripsi);
 				command.Parameters.AddWithValue("@p_tanggal", jam.dtj_tanggal);
+				command.Parameters.AddWithValue("@p_idpkkmb", jam.dtj_idpkkmb);
 				_connection.Open();
 				command.ExecuteNonQuery();
 				_connection.Close();
@@ -178,6 +183,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_jumlah", jam.dtj_jumlah);
 				command.Parameters.AddWithValue("@p_deskripsi", jam.dtj_deskripsi);
 				command.Parameters.AddWithValue("@p_tanggal", jam.dtj_tanggal);
+				command.Parameters.AddWithValue("@p_idpkkmb", jam.dtj_idpkkmb);
 				_connection.Open();
 				command.ExecuteNonQuery();
 				_connection.Close();
@@ -217,6 +223,7 @@ namespace PKKMB_API.Model
 						dtj_jumlah = int.Parse(reader["dtj_jumlah"].ToString()),
 						dtj_tanggal = DateTime.Parse(reader["dtj_tanggal"].ToString()),
 						dtj_deskripsi = reader["dtj_deskripsi"].ToString(),
+						dtj_idpkkmb = reader["dtj_idpkkmb"].ToString(),
 						dtj_status = reader["dts_status"].ToString(),
 					};
 					dtjList.Add(dtj);
@@ -251,6 +258,7 @@ namespace PKKMB_API.Model
 				dtj.dtj_jumlah = int.Parse(reader["dtj_jumlah"].ToString());
 				dtj.dtj_tanggal = DateTime.Parse(reader["dtj_tanggal"].ToString());
 				dtj.dtj_deskripsi = reader["dtj_deskripsi"].ToString();
+				dtj.dtj_idpkkmb = reader["dtj_idpkkmb"].ToString();
 				dtj.dtj_status = reader["dts_status"].ToString();
 
 				reader.Close();

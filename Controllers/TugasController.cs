@@ -18,36 +18,6 @@ namespace PKKMB_API.Controllers
 			tugasRepository = new TugasRepository(configuration);
 		}
 
-		[HttpGet("/NextId", Name = "NextId")]
-		public IActionResult NextId()
-		{
-			var role = HttpContext.Request.Cookies["role"];
-			try
-			{
-				/*if (role == "Mahasiswa")
-				{*/
-				var tugasList = tugasRepository.NextId();
-				if (tugasList != null)
-				{
-					return Ok(new { Status = 200, Messages = "Berhasil Menampilkan Data Tugas", Data = tugasList });
-				}
-				else
-				{
-					return StatusCode(404, new { Status = 404, Messages = "Data Tugas Tidak Ditemukan", Data = tugasList });
-				}
-				/*}
-				else
-				{
-					return Unauthorized(new { Status = 401, Messages = "Unauthorized", Data = new Object() });
-				}*/
-			}
-			catch (Exception ex)
-			{
-				// Handle common errors
-				return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan Data Tugas", Data = ex.Message });
-			}
-		}
-
 		[HttpGet("/getalltugas", Name = "GetAllTugas")]
 		public IActionResult GetAllTugas()
 		{
@@ -137,9 +107,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpPost("Upload")]
-		public IActionResult UploadFile(string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi)
+		public IActionResult UploadFile(string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_idpkkmb)
 		{
-			var result = tugasRepository.UploadFile(tgs_nim, tgs_namatugas, tgs_tglpemberiantugas, file, tgs_deadline, tgs_deskripsi);
+			var result = tugasRepository.UploadFile(tgs_nim, tgs_namatugas, tgs_tglpemberiantugas, file, tgs_deadline, tgs_deskripsi, tgs_idpkkmb);
 			if (result.status == 200)
 			{
 				return Ok(result);
@@ -155,9 +125,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpPut("Ubah")]
-		public IActionResult UbahFile(string tgs_idtugas, string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
+		public IActionResult UbahFile(string tgs_idtugas, string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status, string tgs_idpkkmb)
 		{
-			var result = tugasRepository.UbahFile(tgs_idtugas, tgs_nim, tgs_namatugas, tgs_tglpemberiantugas, file, tgs_deadline, tgs_deskripsi, tgs_status);
+			var result = tugasRepository.UbahFile(tgs_idtugas, tgs_nim, tgs_namatugas, tgs_tglpemberiantugas, file, tgs_deadline, tgs_deskripsi, tgs_status, tgs_idpkkmb);
 			if (result.status == 200)
 			{
 				return Ok(result);
@@ -259,9 +229,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpPost("UploadTugas")]
-		public IActionResult UploadTugas(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas)
+		public IActionResult UploadTugas(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas, string dts_idpkkmb)
 		{
-			var result = tugasRepository.UploadTugasMahasiswa(dts_iddetail, dts_nopendaftaran, file, dts_waktupengumpulan, dts_nilaitugas);
+			var result = tugasRepository.UploadTugasMahasiswa(dts_iddetail, dts_nopendaftaran, file, dts_waktupengumpulan, dts_nilaitugas, dts_idpkkmb);
 			if (result.status == 200)
 			{
 				return Ok(result);
@@ -277,9 +247,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpPut("UbahTugas")]
-		public IActionResult UbahTugas(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas)
+		public IActionResult UbahTugas(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas, string dts_idpkkmb)
 		{
-			var result = tugasRepository.UbahTugasMahasiswa(dts_iddetail, dts_nopendaftaran, file, dts_waktupengumpulan, dts_nilaitugas);
+			var result = tugasRepository.UbahTugasMahasiswa(dts_iddetail, dts_nopendaftaran, file, dts_waktupengumpulan, dts_nilaitugas, dts_idpkkmb);
 			if (result.status == 200)
 			{
 				return Ok(result);

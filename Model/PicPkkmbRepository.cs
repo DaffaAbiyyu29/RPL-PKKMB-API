@@ -31,6 +31,7 @@ namespace PKKMB_API.Model
 						pic_nokaryawan = reader["pic_nokaryawan"].ToString(),
 						pic_nama = reader["pic_nama"].ToString(),
 						pic_password = reader["pic_password"].ToString(),
+						pic_idpkkmb = reader["pic_idpkkmb"].ToString(),
 						pic_status = reader["pic_status"].ToString(),
 					};
 					picList.Add(pic);
@@ -64,6 +65,7 @@ namespace PKKMB_API.Model
 						pic_nokaryawan = reader["pic_nokaryawan"].ToString(),
 						pic_nama = reader["pic_nama"].ToString(),
 						pic_password = reader["pic_password"].ToString(),
+						pic_idpkkmb = reader["pic_idpkkmb"].ToString(),
 						pic_status = reader["pic_status"].ToString(),
 					};
 
@@ -114,6 +116,7 @@ namespace PKKMB_API.Model
 								pic_nokaryawan = reader["pic_nokaryawan"].ToString(),
 								pic_nama = reader["pic_nama"].ToString(),
 								pic_password = reader["pic_password"].ToString(),
+								pic_idpkkmb = reader["pic_idpkkmb"].ToString(),
 								pic_status = reader["pic_status"].ToString(),
 							};
 						}
@@ -148,6 +151,7 @@ namespace PKKMB_API.Model
 				command.CommandType = System.Data.CommandType.StoredProcedure;
 				command.Parameters.AddWithValue("@pic_nama", pic.pic_nama);
 				command.Parameters.AddWithValue("@pic_password", hashedPassword);
+				command.Parameters.AddWithValue("@pic_idpkkmb", pic.pic_idpkkmb);
 				command.Parameters.AddWithValue("@pic_status", "Aktif");
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -174,10 +178,12 @@ namespace PKKMB_API.Model
 			{
 				string query = "UPDATE pkm_mspicpkkmb " +
 							"SET pic_nama = @p2 " +
+							"SET pic_idpkkmb = @p3 " +
 							"WHERE pic_nokaryawan= @p1";
 				using SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p1", pic.pic_nokaryawan);
 				command.Parameters.AddWithValue("@p2", pic.pic_nama);
+				command.Parameters.AddWithValue("@p3", pic.pic_idpkkmb);
 
 
 				_connection.Open();

@@ -11,6 +11,7 @@
 		public string ksk_notelepon { get; set; }
 		public string ksk_email { get; set; }
 		public string ksk_alamat { get; set; }
+		public string ksk_idpkkmb { get; set; }
 		public string ksk_status { get; set; }
 	}
 }

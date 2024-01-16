@@ -8,6 +8,7 @@
 		public string jdl_waktupelaksanaan { get; set; }
 		public string jdl_agenda { get; set; }
 		public string jdl_tempat { get; set; }
+		public string jdl_idpkkmb { get; set; }
 		public string jdl_status { get; set; }
 	}
 }

@@ -42,6 +42,7 @@ namespace PKKMB_API.Repository
 						tgs_filetugas = reader["tgs_filetugas"].ToString(),
 						tgs_deadline = DateTime.Parse(reader["tgs_deadline"].ToString()),
 						tgs_deskripsi = reader["tgs_deskripsi"].ToString(),
+						tgs_idpkkmb = reader["tgs_idpkkmb"].ToString(),
 						tgs_status = reader["tgs_status"].ToString(),
 					};
 					tugasList.Add(tugas);
@@ -54,32 +55,6 @@ namespace PKKMB_API.Repository
 			{
 				Console.WriteLine(ex.Message);
 				return null;
-			}
-		}
-
-		public string NextId()
-		{
-			try
-			{
-				string query = "SELECT dbo.GenerateTgsIdTugas() AS ID";
-				SqlCommand command = new SqlCommand(query, _connection);
-				_connection.Open();
-				SqlDataReader reader = command.ExecuteReader();
-				string nextId = null;
-
-				if (reader.Read())
-				{
-					nextId = reader["ID"].ToString();
-				}
-
-				reader.Close();
-				_connection.Close();
-				return nextId;
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine(ex.Message);
-				return null; // atau throw exception sesuai kebutuhan
 			}
 		}
 
@@ -162,6 +137,7 @@ namespace PKKMB_API.Repository
 						tgs_filetugas = reader["tgs_filetugas"].ToString(),
 						tgs_deadline = DateTime.Parse(reader["tgs_deadline"].ToString()),
 						tgs_deskripsi = reader["tgs_deskripsi"].ToString(),
+						tgs_idpkkmb = reader["tgs_idpkkmb"].ToString(),
 						tgs_status = reader["tgs_status"].ToString(),
 					};
 
@@ -196,6 +172,7 @@ namespace PKKMB_API.Repository
 				command.Parameters.AddWithValue("@p_filetugas", tugasModel.tgs_filetugas);
 				command.Parameters.AddWithValue("@p_deadline", tugasModel.tgs_deadline);
 				command.Parameters.AddWithValue("@p_deskripsi", tugasModel.tgs_deskripsi);
+				command.Parameters.AddWithValue("@p_idpkkmb", tugasModel.tgs_idpkkmb);
 				command.Parameters.AddWithValue("@p_status", tugasModel.tgs_status);
 
 				_connection.Open();
@@ -229,6 +206,7 @@ namespace PKKMB_API.Repository
 				command.Parameters.AddWithValue("@p_tglpemberiantugas", tugas.tgs_tglpemberiantugas);
 				command.Parameters.AddWithValue("@p_deadline", tugas.tgs_deadline);
 				command.Parameters.AddWithValue("@p_deskripsi", tugas.tgs_deskripsi);
+				command.Parameters.AddWithValue("@p_idpkkmb", tugas.tgs_idpkkmb);
 				command.Parameters.AddWithValue("@p_status", tugas.tgs_status);
 
 				_connection.Open();
@@ -250,7 +228,7 @@ namespace PKKMB_API.Repository
 			return _response;
 		}
 
-		public ResponseModel UploadFile(string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi)
+		public ResponseModel UploadFile(string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_idpkkmb)
 		{
 			try
 			{
@@ -283,6 +261,7 @@ namespace PKKMB_API.Repository
 				command.Parameters.AddWithValue("@p_filetugas", uniqueFileName);
 				command.Parameters.AddWithValue("@p_deadline", tgs_deadline);
 				command.Parameters.AddWithValue("@p_deskripsi", tgs_deskripsi);
+				command.Parameters.AddWithValue("@p_idpkkmb", tgs_idpkkmb);
 				command.Parameters.AddWithValue("@p_status", "Aktif");
 
 				_connection.Open();
@@ -303,7 +282,7 @@ namespace PKKMB_API.Repository
 			return _response;
 		}
 
-		public ResponseModel UbahFile(string tgs_idtugas, string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status)
+		public ResponseModel UbahFile(string tgs_idtugas, string tgs_nim, string tgs_namatugas, DateTime tgs_tglpemberiantugas, IFormFile file, DateTime tgs_deadline, string tgs_deskripsi, string tgs_status, string tgs_idpkkmb)
 		{
 			try
 			{
@@ -359,6 +338,7 @@ namespace PKKMB_API.Repository
 
 				command.Parameters.AddWithValue("@p_deadline", tgs_deadline);
 				command.Parameters.AddWithValue("@p_deskripsi", tgs_deskripsi);
+				command.Parameters.AddWithValue("@p_idpkkmb", tgs_idpkkmb);
 				command.Parameters.AddWithValue("@p_status", tgs_status);
 
 				_connection.Open();
@@ -396,6 +376,7 @@ namespace PKKMB_API.Repository
 						dts_iddetail = reader["dts_iddetail"].ToString(),
 						dts_nopendaftaran = reader["dts_nopendaftaran"].ToString(),
 						dts_filetugas = reader["dts_filetugas"].ToString(),
+						dts_idpkkmb = reader["dts_idpkkmb"].ToString(),
 						dts_waktupengumpulan = DateTime.Parse(reader["dts_waktupengumpulan"].ToString()),
 						dts_nilaitugas = Double.Parse(reader["dts_nilaitugas"].ToString()),
 					};
@@ -431,6 +412,7 @@ namespace PKKMB_API.Repository
 						dts_iddetail = reader["dts_iddetail"].ToString(),
 						dts_nopendaftaran = reader["dts_nopendaftaran"].ToString(),
 						dts_filetugas = reader["dts_filetugas"].ToString(),
+						dts_idpkkmb = reader["dts_idpkkmb"].ToString(),
 						dts_waktupengumpulan = DateTime.Parse(reader["dts_waktupengumpulan"].ToString()),
 						dts_nilaitugas = Double.Parse(reader["dts_nilaitugas"].ToString()),
 					};
@@ -454,7 +436,7 @@ namespace PKKMB_API.Repository
 			}
 		}
 
-		public ResponseModel UploadTugasMahasiswa(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas)
+		public ResponseModel UploadTugasMahasiswa(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas, string dts_idpkkmb)
 		{
 			try
 			{
@@ -486,6 +468,7 @@ namespace PKKMB_API.Repository
 				command.Parameters.AddWithValue("@p_filetugas", uniqueFileName);
 				command.Parameters.AddWithValue("@p_waktupengumpulan", dts_waktupengumpulan);
 				command.Parameters.AddWithValue("@p_nilaitugas", dts_nilaitugas);
+				command.Parameters.AddWithValue("@p_idpkkmb", dts_idpkkmb);
 
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -505,7 +488,7 @@ namespace PKKMB_API.Repository
 			return _response;
 		}
 
-		public ResponseModel UbahTugasMahasiswa(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas)
+		public ResponseModel UbahTugasMahasiswa(string dts_iddetail, string dts_nopendaftaran, IFormFile file, DateTime dts_waktupengumpulan, double dts_nilaitugas, string dts_idpkkmb)
 		{
 			try
 			{
@@ -560,6 +543,7 @@ namespace PKKMB_API.Repository
 					command.Parameters.AddWithValue("@p_filetugas", uniqueFileName);
 					command.Parameters.AddWithValue("@p_waktupengumpulan", dts_waktupengumpulan);
 					command.Parameters.AddWithValue("@p_nilaitugas", dts_nilaitugas);
+					command.Parameters.AddWithValue("@p_idpkkmb", dts_idpkkmb);
 
 					_connection.Open();
 					command.ExecuteNonQuery();
@@ -616,6 +600,7 @@ namespace PKKMB_API.Repository
 						{ "dts_filetugas", reader["dts_filetugas"].ToString() },
 						{ "dts_waktupengumpulan", DateTime.Parse(reader["dts_waktupengumpulan"].ToString()) },
 						{ "dts_nilaitugas", Double.Parse(reader["dts_nilaitugas"].ToString()) },
+						{ "dts_idpkkmb", Double.Parse(reader["dts_idpkkmb"].ToString()) },
 					};
 					detailList.Add(detail);
 				}

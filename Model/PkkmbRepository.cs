@@ -83,6 +83,45 @@ namespace PKKMB_API.Model
                 return null;
             }
         }
+        
+        public PkkmbModel getPkkmbAktif()
+        {
+            PkkmbModel pkm = new PkkmbModel();
+            try
+            {
+                string query = "SELECT * FROM [dbo].[view_PkkmbAktif]";
+
+				SqlCommand command = new SqlCommand(query, _connection);
+                _connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    pkm = new PkkmbModel
+                    {
+                        pkm_idPkkmb = reader["pkm_idPkkmb"].ToString(),
+                        pkm_tahunPkkmb = int.Parse(reader["pkm_tahunPkkmb"].ToString()),
+                        pkm_status = reader["pkm_status"].ToString(),
+                    };
+
+                    reader.Close();
+                    _connection.Close();
+                    return pkm;
+                }
+                else
+                {
+                    // User not found
+                    reader.Close();
+                    _connection.Close();
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
 
         public ResponseModel tambahPkkmb([FromBody] PkkmbModel pkm)
         {
@@ -120,7 +159,6 @@ namespace PKKMB_API.Model
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@pkm_idPkkmb", pkm.pkm_idPkkmb);
                 command.Parameters.AddWithValue("@pkm_tahunPkkmb", pkm.pkm_tahunPkkmb);
-                command.Parameters.AddWithValue("@pkm_status", pkm.pkm_status);
 
 
                 _connection.Open();
@@ -137,6 +175,58 @@ namespace PKKMB_API.Model
                 response.status = 500;
                 response.messages = "Terjadi Kesalahan Saat Mengubah Data PKKMB = " + ex.Message;
                 response.data = null;
+            }
+
+            return response;
+        }
+        
+        public ResponseModel aktifkanPkkmb(string pkm_idPkkmb)
+        {
+            try
+            {
+                SqlCommand command = new SqlCommand("sp_AktifkanPkkmb", _connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pkm_idPkkmb", pkm_idPkkmb);
+
+
+                _connection.Open();
+                command.ExecuteNonQuery();
+                _connection.Close();
+
+                response.status = 200;
+                response.messages = "Data PKKMB Berhasil Aktif";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                response.status = 500;
+                response.messages = "Terjadi Kesalahan Saat Mengaktifkan Data PKKMB = " + ex.Message;
+            }
+
+            return response;
+        }
+        
+        public ResponseModel nonaktifkanPkkmb(string pkm_idPkkmb)
+        {
+            try
+            {
+                SqlCommand command = new SqlCommand("sp_NonaktifkanPkkmb", _connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pkm_idPkkmb", pkm_idPkkmb);
+
+
+                _connection.Open();
+                command.ExecuteNonQuery();
+                _connection.Close();
+
+                response.status = 200;
+                response.messages = "Data PKKMB Berhasil Non Aktif";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                response.status = 500;
+                response.messages = "Terjadi Kesalahan Saat Non Aktifkan Data PKKMB = " + ex.Message;
             }
 
             return response;

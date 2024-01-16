@@ -38,6 +38,7 @@ namespace PKKMB_API.Model
 						ksk_notelepon = reader["ksk_notelepon"].ToString(),
 						ksk_email = reader["ksk_email"].ToString(),
 						ksk_alamat = reader["ksk_alamat"].ToString(),
+						ksk_idpkkmb = reader["ksk_idpkkmb"].ToString(),
 						ksk_status = reader["ksk_status"].ToString(),
 					};
 					kskList.Add(ksk);
@@ -75,6 +76,7 @@ namespace PKKMB_API.Model
 						ksk_notelepon = reader["ksk_notelepon"].ToString(),
 						ksk_email = reader["ksk_email"].ToString(),
 						ksk_alamat = reader["ksk_alamat"].ToString(),
+						ksk_idpkkmb = reader["ksk_idpkkmb"].ToString(),
 						ksk_status = reader["ksk_status"].ToString(),
 					};
 					kskList.Add(ksk);
@@ -112,6 +114,7 @@ namespace PKKMB_API.Model
 						ksk_notelepon = reader["ksk_notelepon"].ToString(),
 						ksk_email = reader["ksk_email"].ToString(),
 						ksk_alamat = reader["ksk_alamat"].ToString(),
+						ksk_idpkkmb = reader["ksk_idpkkmb"].ToString(),
 						ksk_status = reader["ksk_status"].ToString(),
 					};
 					kskList.Add(ksk);
@@ -149,6 +152,7 @@ namespace PKKMB_API.Model
 						ksk_notelepon = reader["ksk_notelepon"].ToString(),
 						ksk_email = reader["ksk_email"].ToString(),
 						ksk_alamat = reader["ksk_alamat"].ToString(),
+						ksk_idpkkmb = reader["ksk_idpkkmb"].ToString(),
 						ksk_status = reader["ksk_status"].ToString(),
 					};
 					kskList.Add(ksk);
@@ -188,6 +192,7 @@ namespace PKKMB_API.Model
 						ksk_notelepon = reader["ksk_notelepon"].ToString(),
 						ksk_email = reader["ksk_email"].ToString(),
 						ksk_alamat = reader["ksk_alamat"].ToString(),
+						ksk_idpkkmb = reader["ksk_idpkkmb"].ToString(),
 						ksk_status = reader["ksk_status"].ToString(),
 					};
 
@@ -244,6 +249,7 @@ namespace PKKMB_API.Model
 								ksk_notelepon = reader["ksk_notelepon"].ToString(),
 								ksk_email = reader["ksk_email"].ToString(),
 								ksk_alamat = reader["ksk_alamat"].ToString(),
+								ksk_idpkkmb = reader["ksk_idpkkmb"].ToString(),
 								ksk_status = reader["ksk_status"].ToString(),
 							};
 						}
@@ -285,6 +291,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_notelepon", ksk.ksk_notelepon);
 				command.Parameters.AddWithValue("@p_email", ksk.ksk_email);
 				command.Parameters.AddWithValue("@p_alamat", ksk.ksk_alamat);
+				command.Parameters.AddWithValue("@p_idpkkmb", ksk.ksk_idpkkmb);
 				command.Parameters.AddWithValue("@p_status", "Tidak Aktif");
 
 				_connection.Open();
@@ -318,6 +325,7 @@ namespace PKKMB_API.Model
 							"ksk_notelepon = @p7, " +
 							"ksk_email = @p8, " +
 							"ksk_alamat = @p9 " +
+							"ksk_idpkkmb = @p10 " +
 							"WHERE ksk_nim= @p1";
 				using SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p1", ksk.ksk_nim);
@@ -328,6 +336,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p7", ksk.ksk_notelepon);
 				command.Parameters.AddWithValue("@p8", ksk.ksk_email);
 				command.Parameters.AddWithValue("@p9", ksk.ksk_alamat);
+				command.Parameters.AddWithValue("@p10", ksk.ksk_idpkkmb);
 
 				_connection.Open();
 				command.ExecuteNonQuery();

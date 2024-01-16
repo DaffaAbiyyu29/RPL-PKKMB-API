@@ -7,6 +7,7 @@ namespace PKKMB_API.Model
 		public string inf_namainformasi {get; set;}
 		public DateTime inf_tglpublikasi {get; set;}
 		public string inf_deskripsi {get; set;}
+		public string inf_idpkkmb {get; set;}
 		public string inf_status {get; set;}
 	}
 }

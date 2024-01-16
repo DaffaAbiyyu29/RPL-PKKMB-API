@@ -7,6 +7,7 @@
 		public string nls_nim { get; set; }
 		public string nls_sikap { get; set; }
 		public DateTime nls_tanggal { get; set; }
+		public string nls_idpkkmb { get; set; }
 		public string nls_status { get; set; }
 	}
 }

@@ -38,6 +38,30 @@ namespace PKKMB_API.Controllers
             }
         }
 
+        [HttpGet("/GetPkkmbAktif", Name = "GetPkkmbAktif")]
+        public IActionResult GetPkkmbAktif()
+        {
+            PkkmbModel pkm = _pkkmbRepo.getPkkmbAktif();
+            try
+            {
+                if (pkm != null)
+                {
+                    return Ok(new { Status = 200, Messages = "Berhasil Menampilkan PKKMB Aktif", Data = pkm });
+
+                }
+                else
+                {
+                    // Account not found
+                    return NotFound(new { Status = 404, Messages = "Data PKKMB Aktif Tidak Tersedia", Data = new Object() });
+                }
+            }
+            catch (Exception ex)
+            {
+                // General error
+                return StatusCode(500, new { Status = 500, Messages = "Terjadi Kesalahan Saat Menampilkan PKKMB = " + ex.Message, Data = new Object() });
+            }
+        }
+
         [HttpGet("/GetPkkmb", Name = "GetPkkmb")]
         public IActionResult GetPkkmb(string pkm_idPkkmb)
         {
@@ -73,6 +97,20 @@ namespace PKKMB_API.Controllers
         public IActionResult UpdatePkkmb([FromBody] PkkmbModel pkm)
         {
             var result = _pkkmbRepo.updatePkkmb(pkm);
+            return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+        }
+        
+        [HttpPut("/AktifkanPkkmb", Name = "AktifkanPkkmb")]
+        public IActionResult AktifkanPkkmb(string pkm_idPkkmb)
+        {
+            var result = _pkkmbRepo.aktifkanPkkmb(pkm_idPkkmb);
+            return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+        }
+        
+        [HttpPut("/NonAktifkanPkkmb", Name = "NonAktifkanPkkmb")]
+        public IActionResult NonAktifkanPkkmb(string pkm_idPkkmb)
+        {
+            var result = _pkkmbRepo.nonaktifkanPkkmb(pkm_idPkkmb);
             return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
         }
     }

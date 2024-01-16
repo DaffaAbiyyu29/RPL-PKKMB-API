@@ -233,6 +233,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_kategori", mhsBaru.mhs_kategori);
 				command.Parameters.AddWithValue("@p_statuskelulusan", "-");
 				command.Parameters.AddWithValue("@p_status", "Aktif");
+				command.Parameters.AddWithValue("@p_idpkkmb", mhsBaru.mhs_idpkkmb);
 
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -265,6 +266,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_notelepon", mhsBaru.mhs_notelepon);
 				command.Parameters.AddWithValue("@p_email", mhsBaru.mhs_email);
 				command.Parameters.AddWithValue("@p_kategori", mhsBaru.mhs_kategori);
+				command.Parameters.AddWithValue("@p_idpkkmb", mhsBaru.mhs_idpkkmb);
 
 				_connection.Open();
 				command.ExecuteNonQuery();
@@ -475,6 +477,7 @@ namespace PKKMB_API.Model
 						{ "mhs_programstudi", reader["mhs_programstudi"].ToString() },
 						{ "mhs_kategori", reader["mhs_kategori"].ToString() },
 						{ "mhs_idkelompok", reader["mhs_idkelompok"].ToString() },
+						{ "mhs_idpkkmb", reader["mhs_idpkkmb"].ToString() },
 					};
 					detailList.Add(detail);
 				}

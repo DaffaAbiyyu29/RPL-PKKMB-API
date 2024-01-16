@@ -34,6 +34,7 @@ namespace PKKMB_API.Model
 						jdl_waktupelaksanaan = reader["jdl_waktupelaksanaan"].ToString(),
 						jdl_agenda = reader["jdl_agenda"].ToString(),
 						jdl_tempat = reader["jdl_tempat"].ToString(),
+						jdl_idpkkmb = reader["jdl_idpkkmb"].ToString(),
 						jdl_status = reader["jdl_status"].ToString(),
 					};
 					jadwalList.Add(jadwal);
@@ -70,6 +71,7 @@ namespace PKKMB_API.Model
 						jdl_waktupelaksanaan = reader["jdl_waktupelaksanaan"].ToString(),
 						jdl_agenda = reader["jdl_agenda"].ToString(),
 						jdl_tempat = reader["jdl_tempat"].ToString(),
+						jdl_idpkkmb = reader["jdl_idpkkmb"].ToString(),
 						jdl_status = reader["jdl_status"].ToString(),
 					};
 
@@ -103,6 +105,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_waktupelaksanaan", jadwalModel.jdl_waktupelaksanaan);
 				command.Parameters.AddWithValue("@p_agenda", jadwalModel.jdl_agenda);
 				command.Parameters.AddWithValue("@p_tempat", jadwalModel.jdl_tempat);
+				command.Parameters.AddWithValue("@p_idpkkmb", jadwalModel.jdl_idpkkmb);
 				command.Parameters.AddWithValue("@p_status", jadwalModel.jdl_status);
 
 				_connection.Open();
@@ -137,6 +140,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_waktupelaksanaan", jdl.jdl_waktupelaksanaan);
 				command.Parameters.AddWithValue("@p_agenda", jdl.jdl_agenda);
 				command.Parameters.AddWithValue("@p_tempat", jdl.jdl_tempat);
+				command.Parameters.AddWithValue("@p_idpkkmb", jdl.jdl_idpkkmb);
 				command.Parameters.AddWithValue("@p_status", jdl.jdl_status);
 
 				_connection.Open();

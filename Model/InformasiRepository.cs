@@ -34,6 +34,7 @@ namespace PKKMB_API.Model
 						inf_namainformasi = reader["inf_namainformasi"].ToString(),
 						inf_tglpublikasi = DateTime.Parse(reader["inf_tglpublikasi"].ToString()),
 						inf_deskripsi = reader["inf_deskripsi"].ToString(),
+						inf_idpkkmb = reader["inf_idpkkmb"].ToString(),
 						inf_status = reader["inf_status"].ToString()
 
 					};
@@ -71,6 +72,7 @@ namespace PKKMB_API.Model
 					informasiModel.inf_namainformasi = reader["inf_namainformasi"].ToString();
 					informasiModel.inf_tglpublikasi = DateTime.Parse(reader["inf_tglpublikasi"].ToString());
 					informasiModel.inf_deskripsi = reader["inf_deskripsi"].ToString();
+					informasiModel.inf_idpkkmb = reader["inf_deskripsi"].ToString();
 					informasiModel.inf_status = reader["inf_status"].ToString();
 				}
 
@@ -103,6 +105,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@inf_namainformasi", informasiModel.inf_namainformasi);
 				command.Parameters.AddWithValue("@inf_tglpublikasi", informasiModel.inf_tglpublikasi);
 				command.Parameters.AddWithValue("@inf_deskripsi", informasiModel.inf_deskripsi);
+				command.Parameters.AddWithValue("@inf_idpkkmb", informasiModel.inf_idpkkmb);
 				command.Parameters.AddWithValue("@inf_status", informasiModel.inf_status);
 
 				_connection.Open();
@@ -139,6 +142,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@inf_namainformasi", informasiModel.inf_namainformasi);
 				command.Parameters.AddWithValue("@inf_tglpublikasi", informasiModel.inf_tglpublikasi);
 				command.Parameters.AddWithValue("@inf_deskripsi", informasiModel.inf_deskripsi);
+				command.Parameters.AddWithValue("@inf_idpkkmb", informasiModel.inf_idpkkmb);
 				command.Parameters.AddWithValue("@inf_status", informasiModel.inf_status);
 
 				_connection.Open();
