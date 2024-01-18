@@ -27,7 +27,7 @@ namespace PKKMB_API.Model
 			MahasiswaBaruModel mhsBaru = new MahasiswaBaruModel();
 			try
 			{
-				string query = "SELECT * FROM pkm_msmahasiswa WHERE mhs_nopendaftaran = @p1";
+				string query = "SELECT * FROM pkm_msmahasiswa WHERE mhs_nopendaftaran = @p1 AND mhs_status = 'Aktif'";
 				SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p1", username);
 				_connection.Open();
@@ -86,7 +86,7 @@ namespace PKKMB_API.Model
 			PanitiaKesekretariatanModel ksk = new PanitiaKesekretariatanModel();
 			try
 			{
-				string query = "SELECT * FROM pkm_mskesekretariatan WHERE ksk_nim = @p1";
+				string query = "SELECT * FROM pkm_mskesekretariatan WHERE ksk_nim = @p1 AND ksk_status = 'Aktif'";
 				SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p1", username);
 				_connection.Open();
@@ -144,7 +144,7 @@ namespace PKKMB_API.Model
 			PicPkkmbModel pic = new PicPkkmbModel();
 			try
 			{
-				string query = "SELECT * FROM pkm_mspicpkkmb WHERE pic_nokaryawan = @p1";
+				string query = "SELECT * FROM pkm_mspicpkkmb WHERE pic_nokaryawan = @p1 AND pic_status = 'Aktif'";
 				SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p1", username);
 				_connection.Open();

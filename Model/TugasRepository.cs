@@ -22,13 +22,14 @@ namespace PKKMB_API.Repository
 			_connection = new SqlConnection(_connectionString);
 		}
 
-		public List<TugasModel> GetAllData()
+		public List<TugasModel> GetAllData(string tgs_idpkkmb)
 		{
 			List<TugasModel> tugasList = new List<TugasModel>();
 			try
 			{
-				string query = "SELECT * FROM pkm_trtugas";
+				string query = "SELECT * FROM pkm_trtugas WHERE tgs_idpkkmb = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", tgs_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())
@@ -577,7 +578,7 @@ namespace PKKMB_API.Repository
 			List<Dictionary<string, object>> detailList = new List<Dictionary<string, object>>();
 			try
 			{
-				string query = "SELECT * FROM view_DetailTugasMahasiswa WHERE dts_iddetail = @idtugas AND mhs_idkelompok = @idkelompok";
+				string query = "SELECT * FROM view_DetailTugasKelompok WHERE dts_iddetail = @idtugas AND mhs_idkelompok = @idkelompok";
 
 				SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@idtugas", idtugas);
@@ -600,7 +601,6 @@ namespace PKKMB_API.Repository
 						{ "dts_filetugas", reader["dts_filetugas"].ToString() },
 						{ "dts_waktupengumpulan", DateTime.Parse(reader["dts_waktupengumpulan"].ToString()) },
 						{ "dts_nilaitugas", Double.Parse(reader["dts_nilaitugas"].ToString()) },
-						{ "dts_idpkkmb", Double.Parse(reader["dts_idpkkmb"].ToString()) },
 					};
 					detailList.Add(detail);
 				}

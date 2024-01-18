@@ -15,14 +15,14 @@ namespace PKKMB_API.Model
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
 			_connection = new SqlConnection(_connectionString);
 		}
-		public List<RuanganModel> getAllData()
+		public List<RuanganModel> getAllData(string rng_idpkkmb)
 		{
 			List<RuanganModel> ruanganList = new List<RuanganModel>();
 			try
 			{
-				string query = "select * from pkm_msruangan";
+				string query = "SELECT * FROM pkm_msruangan WHERE rng_idpkkmb = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
-
+				command.Parameters.AddWithValue("@p1", rng_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())

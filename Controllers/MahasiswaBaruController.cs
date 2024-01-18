@@ -22,11 +22,11 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/getallmahasiswa", Name = "GetAllMahasiswa")]
-		public IActionResult GetAllMahasiswa()
+		public IActionResult GetAllMahasiswa(string mhs_idpkkmb)
 		{
 			try
 			{
-				var mhsBaru = _mhsBaruRepo.getAllData();
+				var mhsBaru = _mhsBaruRepo.getAllData(mhs_idpkkmb);
 				if (mhsBaru != null)
 				{
 					return Ok(new { Status = 200, Messages = "Berhasil Menampilkan Data Mahasiswa", Data = mhsBaru });

@@ -14,13 +14,13 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/GetAllInformasi", Name = "GetAllInformasi")]
-		public IActionResult GetAllInformasi()
+		public IActionResult GetAllInformasi(string inf_idpkkmb)
 		{
 			try
 			{
 				response.status = 200;
 				response.messages = "Success";
-				response.data = informasiRepository.getAllData();
+				response.data = informasiRepository.getAllData(inf_idpkkmb);
 			}
 			catch (Exception ex)
 			{

@@ -15,14 +15,14 @@ namespace PKKMB_API.Model
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
 			_connection = new SqlConnection(_connectionString);
 		}
-		public List<NilaiSikapModel> getAllData()
+		public List<NilaiSikapModel> getAllData(string nls_idpkkmb)
 		{
 			List<NilaiSikapModel> nilaisikapList = new List<NilaiSikapModel>();
 			try
 			{
-				string query = "select * from pkm_trnilaisikap";
+				string query = "SELECT * FROM pkm_trnilaisikap WHERE nls_idpkkmb = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
-
+				command.Parameters.AddWithValue("@p1", nls_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())
@@ -119,7 +119,7 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@nls_nim", nilaiSikapModel.nls_nim);
 				command.Parameters.AddWithValue("@nls_sikap", nilaiSikapModel.nls_sikap);
 				command.Parameters.AddWithValue("@nls_tanggal", nilaiSikapModel.nls_tanggal);
-				command.Parameters.AddWithValue("@p_nls_idpkkmb", nilaiSikapModel.nls_idpkkmb);
+				command.Parameters.AddWithValue("@nls_idpkkmb", nilaiSikapModel.nls_idpkkmb);
 				command.Parameters.AddWithValue("@nls_status", nilaiSikapModel.nls_status);
 				_connection.Open();
 				command.ExecuteNonQuery();

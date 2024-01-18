@@ -19,14 +19,14 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/getalltugas", Name = "GetAllTugas")]
-		public IActionResult GetAllTugas()
+		public IActionResult GetAllTugas(string tgs_idpkkmb)
 		{
 			var role = HttpContext.Request.Cookies["role"];
 			try
 			{
 				/*if (role == "Mahasiswa")
 				{*/
-				var tugasList = tugasRepository.GetAllData();
+				var tugasList = tugasRepository.GetAllData(tgs_idpkkmb);
 				if (tugasList != null)
 				{
 					return Ok(new { Status = 200, Messages = "Berhasil Menampilkan Data Tugas", Data = tugasList });

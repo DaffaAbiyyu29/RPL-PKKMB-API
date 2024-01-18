@@ -73,7 +73,7 @@ namespace PKKMB_API.Model
 						abs_tglkehadiran = DateTime.Parse(reader["abs_tglkehadiran"].ToString()),
 						abs_statuskehadiran = reader["abs_Statuskehadiran"].ToString(),
 						abs_keterangan = reader["abs_keterangan"].ToString(),
-                        abs_idpkkmb = reader["abs_idpkkmb"].ToString(),
+						abs_idpkkmb = reader["abs_idpkkmb"].ToString(),
 						abs_status = reader["abs_status"].ToString(),
 					};
 

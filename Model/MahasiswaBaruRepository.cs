@@ -26,13 +26,14 @@ namespace PKKMB_API.Model
 			_configuration = configuration;
 		}
 
-		public List<MahasiswaBaruModel> getAllData()
+		public List<MahasiswaBaruModel> getAllData(string mhs_idpkkmb)
 		{
 			List<MahasiswaBaruModel> mhsList = new List<MahasiswaBaruModel>();
 			try
 			{
-				string query = "SELECT * FROM pkm_msmahasiswa";
+				string query = "SELECT * FROM pkm_msmahasiswa WHERE mhs_idpkkmb = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", mhs_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())

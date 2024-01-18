@@ -15,11 +15,11 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/GetAllKelompok", Name = "GetAllKelompok")]
-		public IActionResult GetAllKelompok()
+		public IActionResult GetAllKelompok(string kmk_idpkkmb)
 		{
 			try
 			{
-				var kel = _kelRepo.TampilKelompok();
+				var kel = _kelRepo.TampilKelompok(kmk_idpkkmb);
 
 				if (kel != null)
 				{

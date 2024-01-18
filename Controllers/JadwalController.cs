@@ -14,13 +14,13 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/GetAllJadwal", Name = "GetAllJadwal")]
-		public IActionResult GetAllJadwal()
+		public IActionResult GetAllJadwal(string jdl_idpkkmb)
 		{
 			try
 			{
 				response.status = 200;
 				response.messages = "Success";
-				response.data = jadwalRepository.getAllData();
+				response.data = jadwalRepository.getAllData(jdl_idpkkmb);
 			}
 			catch (Exception ex)
 			{
@@ -77,6 +77,7 @@ namespace PKKMB_API.Controllers
 				jdl_waktupelaksanaan = jadwalModel.jdl_waktupelaksanaan,
 				jdl_agenda = jadwalModel.jdl_agenda,
 				jdl_tempat = jadwalModel.jdl_tempat,
+				jdl_idpkkmb = jadwalModel.jdl_idpkkmb,
 				jdl_status = jadwalModel.jdl_status
 			};
 

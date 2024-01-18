@@ -17,9 +17,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/TampilKskAktif", Name = "TampilKskAktif")]
-		public IActionResult TampilKskAktif()
+		public IActionResult TampilKskAktif(string ksk_idpkkmb)
 		{
-			var ksk = _kskRepo.TampilKskAktif();
+			var ksk = _kskRepo.TampilKskAktif(ksk_idpkkmb);
 			try
 			{
 				if (ksk != null)
@@ -39,9 +39,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/TampilFasilitator", Name = "TampilFasilitator")]
-		public IActionResult TampilFasilitator()
+		public IActionResult TampilFasilitator(string ksk_idpkkmb)
 		{
-			var ksk = _kskRepo.TampilFasilitator();
+			var ksk = _kskRepo.TampilFasilitator(ksk_idpkkmb);
 			try
 			{
 				if (ksk != null)
@@ -61,9 +61,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/TampilKsk", Name = "TampilKsk")]
-		public IActionResult TampilKsk()
+		public IActionResult TampilKsk(string ksk_idpkkmb)
 		{
-			var ksk = _kskRepo.TampilKsk();
+			var ksk = _kskRepo.TampilKsk(ksk_idpkkmb);
 			try
 			{
 				if (ksk != null)
@@ -83,9 +83,9 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/TampilKskDraft", Name = "TampilKskDraft")]
-		public IActionResult TampilKskDraft()
+		public IActionResult TampilKskDraft(string ksk_idpkkmb)
 		{
-			var ksk = _kskRepo.TampilKskDraft();
+			var ksk = _kskRepo.TampilKskDraft(ksk_idpkkmb);
 			try
 			{
 				if (ksk != null)

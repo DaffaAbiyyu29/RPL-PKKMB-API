@@ -16,13 +16,14 @@ namespace PKKMB_API.Model
 			_connection = new SqlConnection(_connectingString);
 		}
 
-		public List<PanitiaKesekretariatanModel> TampilKskAktif()
+		public List<PanitiaKesekretariatanModel> TampilKskAktif(string ksk_idpkkmb)
 		{
 			List<PanitiaKesekretariatanModel> kskList = new List<PanitiaKesekretariatanModel>();
 			try
 			{
-				string query = "SELECT * FROM view_KskAktif";
+				string query = "SELECT * FROM pkm_mskesekretariatan WHERE ksk_status = 'Aktif' AND ksk_idpkkmb = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", ksk_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())
@@ -54,13 +55,14 @@ namespace PKKMB_API.Model
 			}
 		}
 
-		public List<PanitiaKesekretariatanModel> TampilFasilitator()
+		public List<PanitiaKesekretariatanModel> TampilFasilitator(string ksk_idpkkmb)
 		{
 			List<PanitiaKesekretariatanModel> kskList = new List<PanitiaKesekretariatanModel>();
 			try
 			{
-				string query = "SELECT * FROM view_Fasilitator";
+				string query = "SELECT * FROM pkm_mskesekretariatan WHERE ksk_status = 'Aktif' AND ksk_idpkkmb = @p1 AND ksk_role = 'Fasilitator'";
 				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", ksk_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())
@@ -92,13 +94,14 @@ namespace PKKMB_API.Model
 			}
 		}
 
-		public List<PanitiaKesekretariatanModel> TampilKsk()
+		public List<PanitiaKesekretariatanModel> TampilKsk(string ksk_idpkkmb)
 		{
 			List<PanitiaKesekretariatanModel> kskList = new List<PanitiaKesekretariatanModel>();
 			try
 			{
-				string query = "SELECT * FROM view_KSK";
+				string query = "SELECT * FROM pkm_mskesekretariatan WHERE ksk_status = 'Aktif' AND ksk_idpkkmb = @p1 AND ksk_role = 'KSK'";
 				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", ksk_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())
@@ -130,13 +133,14 @@ namespace PKKMB_API.Model
 			}
 		}
 
-		public List<PanitiaKesekretariatanModel> TampilKskDraft()
+		public List<PanitiaKesekretariatanModel> TampilKskDraft(string ksk_idpkkmb)
 		{
 			List<PanitiaKesekretariatanModel> kskList = new List<PanitiaKesekretariatanModel>();
 			try
 			{
-				string query = "SELECT * FROM view_KskDraft";
+				string query = "SELECT * FROM pkm_mskesekretariatan WHERE ksk_status = 'Tidak Aktif' AND ksk_idpkkmb = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", ksk_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())
@@ -173,7 +177,7 @@ namespace PKKMB_API.Model
 			PanitiaKesekretariatanModel ksk = new PanitiaKesekretariatanModel();
 			try
 			{
-				string query = "SELECT * FROM view_KskAktif WHERE ksk_nim = @p1";
+				string query = "SELECT * FROM pkm_mskesekretariatan WHERE ksk_nim = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p1", ksk_nim);
 				_connection.Open();

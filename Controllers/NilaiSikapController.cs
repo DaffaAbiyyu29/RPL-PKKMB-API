@@ -15,13 +15,13 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/GetAllNilaiSikap", Name = "GetAllNilaiSikap")]
-		public IActionResult GetAllNilaiSikap()
+		public IActionResult GetAllNilaiSikap(string nls_idpkkmb)
 		{
 			try
 			{
 				response.status = 200;
 				response.messages = "Success";
-				response.data = nilaiSikapRepository.getAllData();
+				response.data = nilaiSikapRepository.getAllData(nls_idpkkmb);
 			}
 			catch (Exception ex)
 			{

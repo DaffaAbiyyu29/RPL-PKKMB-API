@@ -15,13 +15,14 @@ namespace PKKMB_API.Model
 			_connectionString = configuration.GetConnectionString("DefaultConnection");
 			_connection = new SqlConnection(_connectionString);
 		}
-		public List<JadwalModel> getAllData()
+		public List<JadwalModel> getAllData(string jdl_idpkkmb)
 		{
 			List<JadwalModel> jadwalList = new List<JadwalModel>();
 			try
 			{
-				string query = "select * from pkm_msjadwal";
+				string query = "SELECT * FROM pkm_msjadwal WHERE jdl_idpkkmb = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", jdl_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())

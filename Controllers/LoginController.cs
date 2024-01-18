@@ -29,9 +29,9 @@ namespace PKKMB_API.Controllers
 		//[AllowAnonymous]
 		public IActionResult loginAkun([FromBody] LoginModel login)
 		{
-			MahasiswaBaruModel mhsBaru = _mhsBaruRepo.login(login.username, login.password);
-			PanitiaKesekretariatanModel ksk = _kskRepo.login(login.username, login.password);
-			PicPkkmbModel pic = _picRepo.login(login.username, login.password);
+			MahasiswaBaruModel mhsBaru = _loginRepo.loginMahasiswa(login.username, login.password);
+			PanitiaKesekretariatanModel ksk = _loginRepo.loginKSK(login.username, login.password);
+			PicPkkmbModel pic = _loginRepo.loginPIC(login.username, login.password);
 			try
 			{
 				if (mhsBaru != null && ksk == null && pic == null)

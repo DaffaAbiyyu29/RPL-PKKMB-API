@@ -16,13 +16,14 @@ namespace PKKMB_API.Model
 			_connection = new SqlConnection(_connectingString);
 		}
 
-		public List<KelompokModel> TampilKelompok()
+		public List<KelompokModel> TampilKelompok(string kmk_idpkkmb)
 		{
 			List<KelompokModel> kelList = new List<KelompokModel>();
 			try
 			{
-				string query = "SELECT * FROM pkm_mskelompok";
+				string query = "SELECT * FROM pkm_mskelompok WHERE kmk_idpkkmb = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", kmk_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())
