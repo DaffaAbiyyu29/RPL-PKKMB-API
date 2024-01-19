@@ -16,13 +16,13 @@ namespace PKKMB_API.Controllers
 		}
 
 		[HttpGet("/GetAllAbsensi", Name = "GetAllAbsensi")]
-		public IActionResult GetAllAbsensi()
+		public IActionResult GetAllAbsensi(string abs_idpkkmb)
 		{
 			try
 			{
 				response.status = 200;
 				response.messages = "Berhasil";
-				response.data = _absenRepo.getAllData();
+				response.data = _absenRepo.getAllData(abs_idpkkmb);
 			}
 			catch (Exception ex)
 			{

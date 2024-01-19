@@ -17,13 +17,14 @@ namespace PKKMB_API.Model
 			_configuration = configuration;
 		}
 
-		public List<AbsensiModel> getAllData()
+		public List<AbsensiModel> getAllData(string abs_idpkkmb)
 		{
 			List<AbsensiModel> absenList = new List<AbsensiModel>();
 			try
 			{
-				string query = "Select * from pkm_trabsensi";
+				string query = "Select * from pkm_trabsensi WHERE abs_idpkkmb = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", abs_idpkkmb);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();
 				while (reader.Read())
