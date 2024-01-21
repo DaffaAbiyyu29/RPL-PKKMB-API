@@ -55,7 +55,12 @@ namespace PKKMB_API.Model
 						mhs_status = reader["mhs_status"].ToString(),
 						mhs_saran = reader["mhs_saran"].ToString(),
 						mhs_kritik = reader["mhs_kritik"].ToString(),
-						mhs_insight = reader["mhs_insight"].ToString(),
+						mhs_aspek1 = int.Parse(reader["mhs_aspek1"].ToString()),
+						mhs_aspek2 = int.Parse(reader["mhs_aspek2"].ToString()),
+						mhs_aspek3 = int.Parse(reader["mhs_aspek3"].ToString()),
+						mhs_aspek4 = int.Parse(reader["mhs_aspek4"].ToString()),
+						mhs_aspek5 = int.Parse(reader["mhs_aspek5"].ToString()),
+						mhs_aspek6 = int.Parse(reader["mhs_aspek6"].ToString()),
 						mhs_tglkirimevaluasi = DateTime.TryParse(reader["mhs_tglkirimevaluasi"].ToString(), out DateTime tglkirimevaluasi)
 								? tglkirimevaluasi
 								: DateTime.MinValue,
@@ -105,7 +110,12 @@ namespace PKKMB_API.Model
 						mhs_status = reader["mhs_status"].ToString(),
 						mhs_saran = reader["mhs_saran"].ToString(),
 						mhs_kritik = reader["mhs_kritik"].ToString(),
-						mhs_insight = reader["mhs_insight"].ToString(),
+						mhs_aspek1 = int.Parse(reader["mhs_aspek1"].ToString()),
+						mhs_aspek2 = int.Parse(reader["mhs_aspek2"].ToString()),
+						mhs_aspek3 = int.Parse(reader["mhs_aspek3"].ToString()),
+						mhs_aspek4 = int.Parse(reader["mhs_aspek4"].ToString()),
+						mhs_aspek5 = int.Parse(reader["mhs_aspek5"].ToString()),
+						mhs_aspek6 = int.Parse(reader["mhs_aspek6"].ToString()),
 						mhs_tglkirimevaluasi = DateTime.TryParse(reader["mhs_tglkirimevaluasi"].ToString(), out DateTime tglkirimevaluasi)
 								? tglkirimevaluasi
 								: DateTime.MinValue,
@@ -322,7 +332,12 @@ namespace PKKMB_API.Model
 				command.Parameters.AddWithValue("@p_nopendaftaran", mhsBaru.mhs_nopendaftaran);
 				command.Parameters.AddWithValue("@p_kritik", mhsBaru.mhs_kritik);
 				command.Parameters.AddWithValue("@p_saran", mhsBaru.mhs_saran);
-				command.Parameters.AddWithValue("@p_umpanbalik", mhsBaru.mhs_insight);
+				command.Parameters.AddWithValue("@p_aspek1", mhsBaru.mhs_aspek1);
+				command.Parameters.AddWithValue("@p_aspek2", mhsBaru.mhs_aspek2);
+				command.Parameters.AddWithValue("@p_aspek3", mhsBaru.mhs_aspek3);
+				command.Parameters.AddWithValue("@p_aspek4", mhsBaru.mhs_aspek4);
+				command.Parameters.AddWithValue("@p_aspek5", mhsBaru.mhs_aspek5);
+				command.Parameters.AddWithValue("@p_aspek6", mhsBaru.mhs_aspek6);
 				command.Parameters.AddWithValue("@p_tglkirimevaluasi", mhsBaru.mhs_tglkirimevaluasi);
 
 				_connection.Open();
@@ -370,7 +385,12 @@ namespace PKKMB_API.Model
 						mhs_status = reader["mhs_status"].ToString(),
 						mhs_saran = reader["mhs_saran"].ToString(),
 						mhs_kritik = reader["mhs_kritik"].ToString(),
-						mhs_insight = reader["mhs_insight"].ToString(),
+						mhs_aspek1 = int.Parse(reader["mhs_aspek1"].ToString()),
+						mhs_aspek2 = int.Parse(reader["mhs_aspek2"].ToString()),
+						mhs_aspek3 = int.Parse(reader["mhs_aspek3"].ToString()),
+						mhs_aspek4 = int.Parse(reader["mhs_aspek4"].ToString()),
+						mhs_aspek5 = int.Parse(reader["mhs_aspek5"].ToString()),
+						mhs_aspek6 = int.Parse(reader["mhs_aspek6"].ToString()),
 						mhs_tglkirimevaluasi = DateTime.TryParse(reader["mhs_tglkirimevaluasi"].ToString(), out DateTime tglkirimevaluasi)
 								? tglkirimevaluasi
 								: DateTime.MinValue

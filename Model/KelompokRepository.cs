@@ -227,7 +227,12 @@ namespace PKKMB_API.Model
 						mhs_status = reader["mhs_status"].ToString(),
 						mhs_saran = reader["mhs_saran"].ToString(),
 						mhs_kritik = reader["mhs_kritik"].ToString(),
-						mhs_insight = reader["mhs_insight"].ToString(),
+						mhs_aspek1 = int.Parse(reader["mhs_aspek1"].ToString()),
+						mhs_aspek2 = int.Parse(reader["mhs_aspek2"].ToString()),
+						mhs_aspek3 = int.Parse(reader["mhs_aspek3"].ToString()),
+						mhs_aspek4 = int.Parse(reader["mhs_aspek4"].ToString()),
+						mhs_aspek5 = int.Parse(reader["mhs_aspek5"].ToString()),
+						mhs_aspek6 = int.Parse(reader["mhs_aspek6"].ToString()),
 						mhs_tglkirimevaluasi = DateTime.TryParse(reader["mhs_tglkirimevaluasi"].ToString(), out DateTime tglkirimevaluasi)
 								? tglkirimevaluasi
 								: DateTime.MinValue
