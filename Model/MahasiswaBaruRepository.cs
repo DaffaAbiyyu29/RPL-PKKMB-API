@@ -362,7 +362,7 @@ namespace PKKMB_API.Model
 			List<MahasiswaBaruModel> mhsList = new List<MahasiswaBaruModel>();
 			try
 			{
-				string query = "SELECT * FROM view_MahasiswaTanpaKelompok";
+				string query = "SELECT * FROM pkm_msmahasiswa WHERE (mhs_idkelompok IS NULL)";
 				SqlCommand command = new SqlCommand(query, _connection);
 				_connection.Open();
 				SqlDataReader reader = command.ExecuteReader();

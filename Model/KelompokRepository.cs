@@ -203,7 +203,7 @@ namespace PKKMB_API.Model
 			List<MahasiswaBaruModel> mhsList = new List<MahasiswaBaruModel>();
 			try
 			{
-				string query = "SELECT * FROM GetAnggotaKelompok(@p_idkelompok)";
+				string query = "SELECT * FROM pkm_msmahasiswa WHERE mhs_idkelompok = @p_idkelompok";
 				SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p_idkelompok", idkelompok);
 				_connection.Open();
