@@ -22,7 +22,7 @@ namespace PKKMB_API.Model
 			List<AbsensiModel> absenList = new List<AbsensiModel>();
 			try
 			{
-				string query = "Select * from pkm_trabsensi WHERE abs_idpkkmb = @p1";
+				string query = "SELECT * FROM pkm_trabsensi WHERE abs_idpkkmb = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p1", abs_idpkkmb);
 				_connection.Open();
@@ -58,7 +58,7 @@ namespace PKKMB_API.Model
 			AbsensiModel absensi = new AbsensiModel();
 			try
 			{
-				string query = "select * from pkm_trabsensi where abs_idabsensi = @p1";
+				string query = "SELECT * FROM pkm_trabsensi WHERE abs_idabsensi = @p1";
 				SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p1", abs_idabsensi);
 				_connection.Open();
@@ -205,7 +205,7 @@ namespace PKKMB_API.Model
 			List<AbsensiModel> absenList = new List<AbsensiModel>();
 			try
 			{
-				string query = "SELECT * FROM [dbo].[GetAbsensiByTanggal](@p_tanggal)";
+				string query = "SELECT * FROM pkm_trabsensi WHERE CONVERT(DATE, abs_tglkehadiran) = @p_tanggal";
 				SqlCommand command = new SqlCommand(query, _connection);
 				command.Parameters.AddWithValue("@p_tanggal", abs_tglkehadiran);
 				_connection.Open();
