@@ -426,5 +426,80 @@ namespace PKKMB_API.Model
 
 			return response;
 		}
+
+		public PanitiaKesekretariatanModel getKskByEmail(string ksk_email)
+		{
+			PanitiaKesekretariatanModel ksk = new PanitiaKesekretariatanModel();
+			try
+			{
+				string query = "SELECT * FROM pkm_mskesekretariatan WHERE ksk_email = @p1";
+				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", ksk_email);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+
+				if (reader.Read())
+				{
+					ksk = new PanitiaKesekretariatanModel
+					{
+						ksk_nim = reader["ksk_nim"].ToString(),
+						ksk_nama = reader["ksk_nama"].ToString(),
+						ksk_jeniskelamin = reader["ksk_jeniskelamin"].ToString(),
+						ksk_programstudi = reader["ksk_programstudi"].ToString(),
+						ksk_password = reader["ksk_password"].ToString(),
+						ksk_role = reader["ksk_role"].ToString(),
+						ksk_notelepon = reader["ksk_notelepon"].ToString(),
+						ksk_email = reader["ksk_email"].ToString(),
+						ksk_alamat = reader["ksk_alamat"].ToString(),
+						ksk_idpkkmb = reader["ksk_idpkkmb"].ToString(),
+						ksk_status = reader["ksk_status"].ToString(),
+					};
+
+					reader.Close();
+					_connection.Close();
+					return ksk;
+				}
+				else
+				{
+					// User not found
+					reader.Close();
+					_connection.Close();
+					return null;
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return null;
+			}
+		}
+
+		public ResponseModel resetPassword(string ksk_nim, [FromBody] string ksk_password)
+		{
+			try
+			{
+				string hashedPassword = BCrypt.Net.BCrypt.HashPassword(ksk_password, 12);
+
+				SqlCommand command = new SqlCommand("sp_ResetPasswordKesekretariatan", _connection);
+				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_nim", ksk_nim);
+				command.Parameters.AddWithValue("@p_password", hashedPassword);
+
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+
+				response.status = 200;
+				response.messages = "Reset Kata Sandi Kesekretariatan Berhasil";
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				response.status = 500;
+				response.messages = "Terjadi kesalahan Saat Mereset Kata Sandi Kesekretariatan = " + ex.Message;
+			}
+
+			return response;
+		}
 	}
 }

@@ -155,5 +155,12 @@ namespace PKKMB_API.Controllers
 			var result = _kskRepo.nonAktifKsk(ksk_nim);
 			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
 		}
+
+		[HttpPut("/ResetKataSandiKesekretariatan", Name = "ResetKataSandiKesekretariatan")]
+		public IActionResult ResetKataSandiKesekretariatan(string ksk_nim, [FromBody] string ksk_password)
+		{
+			var result = _kskRepo.resetPassword(ksk_nim, ksk_password);
+			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+		}
 	}
 }

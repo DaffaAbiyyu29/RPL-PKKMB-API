@@ -157,5 +157,12 @@ namespace PKKMB_API.Controllers
 			var result = _mhsBaruRepo.batalKelulusan(mhs_nopendaftaran);
 			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
 		}
+
+		[HttpPut("/ResetKataSandiMahasiswa", Name = "ResetKataSandiMahasiswa")]
+		public IActionResult ResetKataSandiMahasiswa(string mhs_nopendaftaran, [FromBody] string mhs_password)
+		{
+			var result = _mhsBaruRepo.resetPassword(mhs_nopendaftaran, mhs_password);
+			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+		}
 	}
 }

@@ -582,5 +582,95 @@ namespace PKKMB_API.Model
 
 			return response;
 		}
+
+		public MahasiswaBaruModel getMahasiswaByEmail(string mhs_email)
+		{
+			MahasiswaBaruModel mhsBaru = new MahasiswaBaruModel();
+			try
+			{
+				string query = "SELECT * FROM pkm_msmahasiswa WHERE mhs_email = @p1";
+				SqlCommand command = new SqlCommand(query, _connection);
+				command.Parameters.AddWithValue("@p1", mhs_email);
+				_connection.Open();
+				SqlDataReader reader = command.ExecuteReader();
+
+				if (reader.Read())
+				{
+					mhsBaru = new MahasiswaBaruModel
+					{
+						mhs_nopendaftaran = reader["mhs_nopendaftaran"].ToString(),
+						mhs_namalengkap = reader["mhs_namalengkap"].ToString(),
+						mhs_gender = reader["mhs_gender"].ToString(),
+						mhs_programstudi = reader["mhs_programstudi"].ToString(),
+						mhs_alamat = reader["mhs_alamat"].ToString(),
+						mhs_notelepon = reader["mhs_notelepon"].ToString(),
+						mhs_email = reader["mhs_email"].ToString(),
+						mhs_password = reader["mhs_password"].ToString(),
+						mhs_kategori = reader["mhs_kategori"].ToString(),
+						mhs_idkelompok = reader["mhs_idkelompok"].ToString(),
+						mhs_idpkkmb = reader["mhs_idpkkmb"].ToString(),
+						mhs_statuskelulusan = reader["mhs_statuskelulusan"].ToString(),
+						mhs_status = reader["mhs_status"].ToString(),
+						mhs_saran = reader["mhs_saran"].ToString(),
+						mhs_kritik = reader["mhs_kritik"].ToString(),
+						mhs_aspek1 = int.Parse(reader["mhs_aspek1"].ToString()),
+						mhs_aspek2 = int.Parse(reader["mhs_aspek2"].ToString()),
+						mhs_aspek3 = int.Parse(reader["mhs_aspek3"].ToString()),
+						mhs_aspek4 = int.Parse(reader["mhs_aspek4"].ToString()),
+						mhs_aspek5 = int.Parse(reader["mhs_aspek5"].ToString()),
+						mhs_aspek6 = int.Parse(reader["mhs_aspek6"].ToString()),
+						mhs_tglkirimevaluasi = DateTime.TryParse(reader["mhs_tglkirimevaluasi"].ToString(), out DateTime tglkirimevaluasi)
+								? tglkirimevaluasi
+								: DateTime.MinValue,
+						mhs_jamplus = int.Parse(reader["mhs_jamplus"].ToString()),
+						mhs_jamminus = int.Parse(reader["mhs_jamminus"].ToString()),
+					};
+
+					reader.Close();
+					_connection.Close();
+					return mhsBaru;
+				}
+				else
+				{
+					// User not found
+					reader.Close();
+					_connection.Close();
+					return null;
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return null;
+			}
+		}
+
+		public ResponseModel resetPassword(string mhs_nopendaftaran, [FromBody] string mhs_password)
+		{
+			try
+			{
+				string hashedPassword = BCrypt.Net.BCrypt.HashPassword(mhs_password, 12);
+
+				SqlCommand command = new SqlCommand("sp_ResetPasswordMahasiswa", _connection);
+				command.CommandType = System.Data.CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_nopendaftaran", mhs_nopendaftaran);
+				command.Parameters.AddWithValue("@p_password", hashedPassword);
+
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+
+				response.status = 200;
+				response.messages = "Reset Kata Sandi Mahasiswa Berhasil";
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				response.status = 500;
+				response.messages = "Terjadi kesalahan Saat Mereset Kata Sandi Mahasiswa = " + ex.Message;
+			}
+
+			return response;
+		}
 	}
 }
