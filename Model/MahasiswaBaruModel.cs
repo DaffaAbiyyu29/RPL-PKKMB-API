@@ -28,5 +28,6 @@ namespace PKKMB_API.Model
 		public int mhs_aspek4 { get; set; }
 		public int mhs_aspek5 { get; set; }
 		public int mhs_aspek6 { get; set; }
+		public string mhs_sertifikat { get; set; }
 	}
 }

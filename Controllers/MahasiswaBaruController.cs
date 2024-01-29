@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PKKMB_API.Model;
+using PKKMB_API.Repository;
 using System.Data;
 
 namespace PKKMB_API.Controllers
@@ -163,6 +164,40 @@ namespace PKKMB_API.Controllers
 		{
 			var result = _mhsBaruRepo.resetPassword(mhs_nopendaftaran, mhs_password);
 			return StatusCode(result.status, new { Status = result.status, Messages = result.messages });
+		}
+
+		[HttpPut("/UploadSertifikat", Name = "UploadSertifikat")]
+		public IActionResult UploadSertifikat(string mhs_nopendaftaran, IFormFile file)
+		{
+			var result = _mhsBaruRepo.UploadSertifikat(mhs_nopendaftaran, file);
+			if (result.status == 200)
+			{
+				return Ok(result);
+			}
+			else if (result.status == 404)
+			{
+				return NotFound(result);
+			}
+			else
+			{
+				return StatusCode(500, result);
+			}
+		}
+
+		[HttpPost("/DownloadSertifikat", Name = "DownloadSertifikat")]
+		public IActionResult DownloadSertifikat([FromBody] string fileName)
+		{
+			var filePath = Path.Combine("C:\\RPL\\PKKMB-API\\Sertifikat", fileName);
+
+			if (System.IO.File.Exists(filePath))
+			{
+				var fileBytes = System.IO.File.ReadAllBytes(filePath);
+				return File(fileBytes, "application/octet-stream", fileName);
+			}
+			else
+			{
+				return NotFound();
+			}
 		}
 	}
 }

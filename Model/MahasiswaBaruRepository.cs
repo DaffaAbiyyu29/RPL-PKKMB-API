@@ -66,6 +66,7 @@ namespace PKKMB_API.Model
 								: DateTime.MinValue,
 						mhs_jamplus = int.Parse(reader["mhs_jamplus"].ToString()),
 						mhs_jamminus = int.Parse(reader["mhs_jamminus"].ToString()),
+						mhs_sertifikat = reader["mhs_sertifikat"].ToString(),
 					};
 					mhsList.Add(mhsBaru);
 				}
@@ -121,6 +122,7 @@ namespace PKKMB_API.Model
 								: DateTime.MinValue,
 						mhs_jamplus = int.Parse(reader["mhs_jamplus"].ToString()),
 						mhs_jamminus = int.Parse(reader["mhs_jamminus"].ToString()),
+						mhs_sertifikat = reader["mhs_sertifikat"].ToString(),
 					};
 
 					reader.Close();
@@ -624,6 +626,7 @@ namespace PKKMB_API.Model
 								: DateTime.MinValue,
 						mhs_jamplus = int.Parse(reader["mhs_jamplus"].ToString()),
 						mhs_jamminus = int.Parse(reader["mhs_jamminus"].ToString()),
+						mhs_sertifikat = reader["mhs_sertifikat"].ToString(),
 					};
 
 					reader.Close();
@@ -668,6 +671,54 @@ namespace PKKMB_API.Model
 				Console.WriteLine(ex.Message);
 				response.status = 500;
 				response.messages = "Terjadi kesalahan Saat Mereset Kata Sandi Mahasiswa = " + ex.Message;
+			}
+
+			return response;
+		}
+
+		public ResponseModel UploadSertifikat(string mhs_nopendaftaran, IFormFile file)
+		{
+			try
+			{
+				// Mendapatkan direktori tempat menyimpan file
+				string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "Sertifikat");
+
+				// Mengecek apakah direktori sudah ada, jika belum, maka membuatnya
+				if (!Directory.Exists(uploadDir))
+				{
+					Directory.CreateDirectory(uploadDir);
+				}
+
+				// Membuat nama file yang unik untuk menghindari konflik
+				string uniqueFileName = file.FileName;
+
+				// Membuat path file tujuan
+				string filePath = Path.Combine(uploadDir, uniqueFileName);
+
+				// Menyimpan file ke server
+				using (var fileStream = new FileStream(filePath, FileMode.Create))
+				{
+					file.CopyTo(fileStream);
+				}
+
+				SqlCommand command = new SqlCommand("sp_UploadSertifikat", _connection);
+				command.CommandType = CommandType.StoredProcedure;
+				command.Parameters.AddWithValue("@p_nopendaftaran", mhs_nopendaftaran);
+				command.Parameters.AddWithValue("@p_sertifikat", uniqueFileName);
+
+				_connection.Open();
+				command.ExecuteNonQuery();
+				_connection.Close();
+
+				response.status = 200;
+				response.messages = "Sertifikat berhasil diunggah";
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				response.status = 500;
+				response.messages = "Terjadi kesalahan saat mengunggah sertifikat: " + ex.Message;
+				response.data = null;
 			}
 
 			return response;
